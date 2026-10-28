@@ -5,11 +5,31 @@ import ComparisonTable from "./ComparisonTable";
 import type { SkillComparison } from "@/types";
 
 const assessed: SkillComparison = {
-  vacancy_skill_id: 1, skill_id: "react", skill_label: "React", expected_level: 3,
-  candidate_level: 4, delta: 1, result: "exceed", is_override: true,
-  rating_source: "assessor", confidence: "high", reason: null, portfolio_skill_id: 8,
+  vacancy_skill_id: 1,
+  skill_id: "react",
+  skill_label: "React",
+  expected_level: 3,
+  candidate_level: 4,
+  delta: 1,
+  result: "exceed",
+  is_override: true,
+  rating_source: "assessor",
+  confidence: "high",
+  reason: null,
+  portfolio_skill_id: 8,
 };
-const missing: SkillComparison = { ...assessed, vacancy_skill_id: 2, skill_label: "System design", candidate_level: null, delta: null, result: "not_assessed", is_override: false, rating_source: null, confidence: null, reason: "missing_skill" };
+const missing: SkillComparison = {
+  ...assessed,
+  vacancy_skill_id: 2,
+  skill_label: "System design",
+  candidate_level: null,
+  delta: null,
+  result: "not_assessed",
+  is_override: false,
+  rating_source: null,
+  confidence: null,
+  reason: "missing_skill",
+};
 
 describe("ComparisonTable", () => {
   it("renders required and assessed levels using the API contract and names human provenance", () => {
@@ -29,8 +49,25 @@ describe("ComparisonTable", () => {
 
   it("filters to gaps, unknowns, and low-confidence ratings without losing counts", async () => {
     const user = userEvent.setup();
-    render(<ComparisonTable comparisons={[assessed, missing, { ...assessed, vacancy_skill_id: 3, skill_label: "Testing", confidence: "low" }]} />);
-    await user.click(screen.getByRole("button", { name: "Needs follow-up (2)" }));
+    render(
+      <ComparisonTable
+        comparisons={[
+          assessed,
+          missing,
+          {
+            ...assessed,
+            vacancy_skill_id: 3,
+            skill_label: "Testing",
+            rating_source: "ai",
+            is_override: false,
+            confidence: "low",
+          },
+        ]}
+      />,
+    );
+    await user.click(
+      screen.getByRole("button", { name: "Needs follow-up (2)" }),
+    );
     expect(screen.queryByText("React")).not.toBeInTheDocument();
     expect(screen.getByText("System design")).toBeVisible();
     expect(screen.getByText("Testing")).toBeVisible();
@@ -38,9 +75,25 @@ describe("ComparisonTable", () => {
     expect(screen.getByText("React")).toBeVisible();
   });
 
+  it("keeps historical AI confidence from overruling an assessor rating", async () => {
+    const user = userEvent.setup();
+    render(
+      <ComparisonTable comparisons={[{ ...assessed, confidence: "low" }]} />,
+    );
+    expect(screen.getByText("AI confidence: low")).toBeVisible();
+    await user.click(
+      screen.getByRole("button", { name: "Needs follow-up (0)" }),
+    );
+    expect(screen.getByRole("status")).toHaveTextContent(
+      "No skills need follow-up",
+    );
+  });
+
   it("explains empty configuration without implying a candidate match", () => {
     render(<ComparisonTable comparisons={[]} />);
     expect(screen.getByText("No skill requirements configured")).toBeVisible();
-    expect(screen.getByText(/empty report does not indicate a match/)).toBeVisible();
+    expect(
+      screen.getByText(/empty report does not indicate a match/),
+    ).toBeVisible();
   });
 });

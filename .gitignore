@@ -17,6 +17,7 @@ web/.vite/
 web/test-results/
 web/playwright-report/
 assessment/private/
+.runtime/
 
 # OS
 .DS_Store
