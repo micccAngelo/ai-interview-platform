@@ -7,7 +7,7 @@ module Api
 
       def verify_authenticated_tenant!
         scheme = current_user&.scheme
-        return if scheme.present? && Organization.identify(scheme)&.id == current_tenant_id
+        return if scheme.present? && scheme == current_organization.scheme
 
         raise ExceptionHandler::Unauthorized, 'The authenticated tenant does not match this request'
       end

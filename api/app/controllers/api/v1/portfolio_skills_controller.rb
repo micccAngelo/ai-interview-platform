@@ -48,7 +48,10 @@ module Api
       def regenerate_stale_fitgap_reports
         portfolio = @portfolio_skill.portfolio
         FitGapReport.where(portfolio_id: portfolio.id).each do |report|
-          FitGap::Engine.new(portfolio: portfolio, vacancy: report.vacancy).call
+          vacancy = report.vacancy
+          next unless vacancy && vacancy.tenant_id == current_tenant_id
+
+          FitGap::Engine.new(portfolio: portfolio, vacancy: vacancy).call
         end
       end
 

@@ -25,7 +25,6 @@ jobs:
       DB_USERNAME: postgres
       DB_PASSWORD: postgres
       ALLOWED_ORIGINS: http://localhost:5173
-      SECRET_KEY_BASE: synthetic-ci-only-key-not-a-production-secret
     defaults:
       run:
         working-directory: api

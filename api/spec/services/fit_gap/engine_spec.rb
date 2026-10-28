@@ -3,14 +3,16 @@
 require_relative '../../rails_helper'
 require_relative '../../support/assessment_records'
 
-RSpec.describe FitGap::Engine do
+RSpec.describe FitGap::Engine, type: :model do
   include AssessmentRecords
   let(:records) { create_records }
   let(:engine) { described_class.new(portfolio: records[:portfolio], vacancy: records[:vacancy]) }
 
   it 'upserts one deterministic report without a provider or queue' do
     first = engine.call
+    timestamp = first.generated_at
     expect(engine.call.id).to eq(first.id)
+    expect(first.reload.generated_at).to eq(timestamp)
     expect(FitGapReport.count).to eq(1)
     expect(first.skill_comparisons.first).to include('expected_level' => 3, 'candidate_level' => 2, 'result' => 'gap')
     expect(first.culture_narrative).to be_nil
@@ -27,7 +29,8 @@ RSpec.describe FitGap::Engine do
   it 'preserves an earlier report if persistence fails' do
     report = engine.call
     previous = report.attributes
-    allow_any_instance_of(FitGapReport).to receive(:update!).and_raise(ActiveRecord::RecordInvalid.new(report))
+    records[:vacancy].vacancy_skills.first.update!(expected_level: 4)
+    allow_any_instance_of(FitGapReport).to receive(:save!).and_raise(ActiveRecord::RecordInvalid.new(report))
     expect { engine.call }.to raise_error(ActiveRecord::RecordInvalid)
     expect(report.reload.attributes).to eq(previous)
   end

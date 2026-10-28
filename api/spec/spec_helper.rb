@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'rspec'
+require 'rspec/core'
 
 RSpec.configure do |config|
   config.order = :random

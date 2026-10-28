@@ -119,17 +119,21 @@ module Exports
     def render_fit_gap_section(pdf)
       pdf.start_new_page
 
-      pdf.font_size(16) { pdf.text "Fit/Gap Analysis — #{@vacancy.role_title}", style: :bold }
+      pdf.font_size(16) { pdf.text "Fit/Gap Analysis: #{@vacancy.role_title}", style: :bold }
       pdf.move_down 8
 
       comparisons = @fit_gap.skill_comparisons
+      if comparisons.empty?
+        pdf.text 'No skill requirements configured. This report does not establish candidate fit.'
+        return
+      end
 
       table_data = [['Skill', 'Required', 'Candidate', 'Result', 'Delta']]
       comparisons.each do |c|
         table_data << [
           c['skill_label'],
-          c['expected_level'] ? "L#{c['expected_level']}" : '—',
-          c['candidate_level'] ? "L#{c['candidate_level']}" : '—',
+          c['expected_level'] ? "L#{c['expected_level']}" : 'N/A',
+          c['candidate_level'] ? "L#{c['candidate_level']}" : 'Not assessed',
           RESULT_LABELS[c['result']] || c['result'],
           c['delta'] ? (c['delta'] > 0 ? "+#{c['delta']}" : c['delta'].to_s) : 'N/A'
         ]

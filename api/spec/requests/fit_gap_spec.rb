@@ -68,6 +68,34 @@ RSpec.describe 'Fit/Gap API', type: :request do
     expect(own[:skill].reload.assessor_override).to be_nil
   end
 
+  it 'does not let an inaccessible legacy cache block an authorized override' do
+    report = FitGap::Engine.new(portfolio: own[:portfolio], vacancy: own[:vacancy]).call
+    legacy = FitGapReport.create!(portfolio: own[:portfolio], vacancy: foreign[:vacancy], skill_comparisons: [])
+    post "/api/v1/portfolio_skills/#{own[:skill].id}/override", params: { override: { override_level: 4 } }, headers: headers
+    expect(response).to have_http_status(:created)
+    expect(report.reload.skill_comparisons.first['candidate_level']).to eq(4)
+    expect(legacy.reload.skill_comparisons).to eq([])
+  end
+
+  it 'rolls back the override if refreshing a report fails partway through the operation' do
+    report = FitGap::Engine.new(portfolio: own[:portfolio], vacancy: own[:vacancy]).call
+    previous = report.skill_comparisons
+    allow(FitGap::Engine).to receive(:new).and_return(double(call: nil))
+    allow(FitGap::Engine.new).to receive(:call).and_raise('Synthetic refresh failure')
+    post "/api/v1/portfolio_skills/#{own[:skill].id}/override", params: { override: { override_level: 4 } }, headers: headers
+    expect(response).to have_http_status(:internal_server_error)
+    expect(own[:skill].reload.assessor_override).to be_nil
+    expect(report.reload.skill_comparisons).to eq(previous)
+  end
+
+  it 'rejects incomplete portfolios and missing vacancy parameters' do
+    own[:portfolio].update!(generation_status: 'failed')
+    get "#{base}/fitgap/#{own[:vacancy].id}", headers: headers
+    expect(response).to have_http_status(:unprocessable_entity)
+    post "#{base}/fitgap", headers: headers
+    expect(response).to have_http_status(:unprocessable_entity)
+  end
+
   it 'exports the current comparison as JSON and a real PDF' do
     get "#{base}/export", params: { vacancy_id: own[:vacancy].id, format: 'json' }, headers: headers
     expect(response).to have_http_status(:ok)
@@ -75,5 +103,13 @@ RSpec.describe 'Fit/Gap API', type: :request do
     get "#{base}/export", params: { vacancy_id: own[:vacancy].id, format: 'pdf' }, headers: headers
     expect(response).to have_http_status(:ok)
     expect(response.body).to start_with('%PDF-')
+  end
+
+  it 'exports an unconfigured vacancy without implying a match or crashing' do
+    own[:vacancy].vacancy_skills.destroy_all
+    get "#{base}/export", params: { vacancy_id: own[:vacancy].id, format: 'pdf' }, headers: headers
+    expect(response).to have_http_status(:ok)
+    expect(response.body).to start_with('%PDF-')
+    expect(FitGapReport.first.skill_comparisons).to eq([])
   end
 end

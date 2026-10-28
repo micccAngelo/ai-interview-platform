@@ -18,12 +18,15 @@ module FitGap
 
         comparisons = Comparison.new(requirements: requirements, skills: skills).call
         report = FitGapReport.find_or_initialize_by(portfolio_id: @portfolio.id, vacancy_id: @vacancy.id)
-        report.update!(
-          skill_comparisons: comparisons,
+        report.assign_attributes(
+          skill_comparisons: comparisons.map(&:stringify_keys),
           culture_narrative: nil,
-          overall_narrative: summary(comparisons),
-          generated_at: Time.current
+          overall_narrative: summary(comparisons)
         )
+        if report.new_record? || report.changed?
+          report.generated_at = Time.current
+          report.save!
+        end
         report
       end
     end
