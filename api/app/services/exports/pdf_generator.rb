@@ -27,6 +27,9 @@ module Exports
     # Returns PDF binary string.
     def call
       Prawn::Document.new(page_size: 'A4', margin: [40, 50, 40, 50]) do |pdf|
+        font_dir = Rails.root.join('app/assets/fonts')
+        pdf.font_families.update('Vera' => { normal: font_dir.join('Vera.ttf').to_s, bold: font_dir.join('VeraBd.ttf').to_s })
+        pdf.font('Vera')
         render_header(pdf)
         render_portfolio_section(pdf)
         render_fit_gap_section(pdf) if @fit_gap
@@ -128,8 +131,19 @@ module Exports
           c['expected_level'] ? "L#{c['expected_level']}" : '—',
           c['candidate_level'] ? "L#{c['candidate_level']}" : '—',
           RESULT_LABELS[c['result']] || c['result'],
-          c['delta'] ? (c['delta'] > 0 ? "+#{c['delta']}" : c['delta'].to_s) : '—'
+          c['delta'] ? (c['delta'] > 0 ? "+#{c['delta']}" : c['delta'].to_s) : 'N/A'
         ]
+      end
+
+      pdf.move_down 8
+      pdf.font_size(9) do
+        pdf.text 'Missing assessment is not a skill gap. Assessor overrides take precedence over AI ratings.'
+        comparisons.each do |comparison|
+          next unless comparison['is_override']
+
+          pdf.text "#{comparison['skill_label']}: assessor override applied."
+        end
+        pdf.text 'Culture and competency require separate review of behavioral evidence. This is not an automated hiring recommendation.'
       end
 
       pdf.table(table_data, header: true, width: pdf.bounds.width) do |t|
