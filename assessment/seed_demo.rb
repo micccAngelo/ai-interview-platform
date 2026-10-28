@@ -15,6 +15,15 @@ Current.using(tenant_id: organization.id, organization: organization) do
   end
   session = assessment.sessions.first || Session.create!(assessment: assessment, tenant_id: organization.id, status: 'ended', candidate_name: 'Synthetic candidate')
   portfolio = session.portfolio || Portfolio.create!(session: session, generation_status: 'complete', generated_at: Time.current)
+  AssessorOverride.where(portfolio_skill_id: portfolio.portfolio_skills.select(:id)).destroy_all
+  session.transcript_turns.find_or_create_by!(turn_number: 1) do |turn|
+    turn.speaker = 'ai'
+    turn.text = 'Synthetic interview question: how did you investigate a rendering issue?'
+  end
+  session.transcript_turns.find_or_create_by!(turn_number: 2) do |turn|
+    turn.speaker = 'candidate'
+    turn.text = 'Synthetic quote: I reproduced a rendering issue, isolated its cause, and checked the fix.'
+  end
   [ ['react', 'React', 2, 'high'], ['testing', 'Testing and debugging', 3, 'low'], ['communication', 'Technical communication', 3, 'high'] ].each do |id, label, level, confidence|
     skill = portfolio.portfolio_skills.find_or_initialize_by(skill_id: id)
     skill.update!(skill_label: label, ai_level: level, ai_confidence: confidence, competency_summary: 'Synthetic assessment fixture for demonstration. This is not a real candidate evaluation.', evidence: ['Synthetic quote: I reproduced a rendering issue, isolated its cause, and checked the fix.'])
