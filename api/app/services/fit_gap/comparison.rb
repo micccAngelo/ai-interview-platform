@@ -24,7 +24,7 @@ module FitGap
                    'missing_rating'
                  end
         candidate = nil if reason
-        delta = candidate && expected ? candidate - expected : nil
+        delta = candidate && expected ? expected - candidate : nil
 
         {
           vacancy_skill_id: requirement[:id],
