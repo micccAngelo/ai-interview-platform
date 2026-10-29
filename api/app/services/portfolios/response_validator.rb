@@ -61,7 +61,7 @@ module Portfolios
                  'unverified_evidence'
                end
       if reason
-        return base.merge(ai_level: 1, ai_confidence: 'low', evidence: [],
+        return base.merge(ai_level: nil, ai_confidence: 'low', evidence: [],
           assessment_status: 'not_assessed', assessment_reason: reason,
           competency_summary: 'Insufficient verified evidence. Collect a follow-up assessment before assigning a level.')
       end
