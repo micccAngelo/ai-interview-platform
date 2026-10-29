@@ -1,0 +1,14 @@
+
+> ai-interview-web@0.0.0 test:e2e
+> playwright test
+
+
+Running 3 tests using 1 worker
+
+(node:20440) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 e2e\review.spec.ts:42:1 › review, override failure/recovery, comparison, export and transcript (7.1s)
+  ok 2 e2e\review.spec.ts:77:1 › network retry, empty, pending and failed generation states (9.1s)
+  ok 3 e2e\review.spec.ts:92:1 › mobile, long text, keyboard focus and 200 percent text resize (5.5s)
+
+  3 passed (31.0s)

@@ -1,0 +1,12 @@
+Run options: include {:full_description=>/includes\ omitted\ configured\ skills/}
+
+Randomized with seed 488
+
+Portfolios::ResponseValidator
+  includes omitted configured skills without inventing a rating
+
+Finished in 0.32388 seconds (files took 15.92 seconds to load)
+1 example, 0 failures
+
+Randomized with seed 488
+

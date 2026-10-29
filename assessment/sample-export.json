@@ -1,0 +1,76 @@
+{
+  "exported_at": "2026-10-29T17:02:44Z",
+  "portfolio": {
+    "id": 1,
+    "session_id": 1,
+    "candidate_id": null,
+    "generation_status": "complete",
+    "generated_at": "2026-10-29T16:21:36.246Z",
+    "generation_error": null,
+    "skills": [
+      {
+        "id": 1,
+        "skill_id": "react",
+        "skill_label": "React / Frontend Development",
+        "is_discovered": false,
+        "ai_level": 3,
+        "assessment_status": "assessed",
+        "assessment_reason": null,
+        "ai_confidence": "high",
+        "evidence": [
+          "I split state by update frequency and measured the result with the React profiler."
+        ],
+        "competency_summary": "Synthetic fixture: describes a measured approach to state isolation. The quote supports provenance; a human still needs to judge relevance and depth."
+      },
+      {
+        "id": 2,
+        "skill_id": "communication",
+        "skill_label": "Communication",
+        "is_discovered": false,
+        "ai_level": 2,
+        "assessment_status": "assessed",
+        "assessment_reason": null,
+        "ai_confidence": "low",
+        "evidence": [
+          "I wrote an incident update but relied on my lead to align stakeholders."
+        ],
+        "competency_summary": "Synthetic fixture: describes communicating a status update with support from a lead. Interview coverage caps confidence at low."
+      },
+      {
+        "id": 3,
+        "skill_id": "system-design",
+        "skill_label": "System Design",
+        "is_discovered": false,
+        "ai_level": null,
+        "assessment_status": "not_assessed",
+        "assessment_reason": "omitted_by_model",
+        "ai_confidence": "low",
+        "evidence": [],
+        "competency_summary": "Insufficient verified evidence. Collect a follow-up assessment before assigning a level."
+      },
+      {
+        "id": 4,
+        "skill_id": "sql",
+        "skill_label": "Database Design & SQL",
+        "is_discovered": false,
+        "ai_level": null,
+        "assessment_status": "not_assessed",
+        "assessment_reason": "omitted_by_model",
+        "ai_confidence": "low",
+        "evidence": [],
+        "competency_summary": "Insufficient verified evidence. Collect a follow-up assessment before assigning a level."
+      }
+    ],
+    "overrides": [
+      {
+        "id": 1,
+        "portfolio_skill_id": 1,
+        "ai_level": 3,
+        "override_level": 4,
+        "assessor_notes": "Synthetic demo override: reviewed the excerpt in context. This is a workflow example, not a real candidate assessment.",
+        "overridden_by": 9001,
+        "overridden_at": "2026-10-29T16:49:39.985Z"
+      }
+    ]
+  }
+}

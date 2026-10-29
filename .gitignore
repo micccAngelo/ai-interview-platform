@@ -27,3 +27,5 @@ api/vendor/bundle/
 api/.bundle/
 api/config/application.yml
 assessment/private/
+assessment/*.bundle
+Rakamin2-*.zip

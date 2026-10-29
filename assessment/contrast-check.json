@@ -1,0 +1,2841 @@
+{
+  "scope": "Visible text and form controls in real API evidence review, failed override, and role comparison; disabled controls excluded",
+  "sampleCount": 177,
+  "distinctPairCount": 18,
+  "minimumRatio": 5.26,
+  "failures": [],
+  "samples": [
+    {
+      "text": "Rakamin AI Interview",
+      "tag": "SPAN",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "Assessments",
+      "tag": "A",
+      "foreground": [
+        6,
+        109,
+        117
+      ],
+      "background": [
+        230,
+        240,
+        241
+      ],
+      "ratio": 5.26,
+      "minimum": 4.5
+    },
+    {
+      "text": "Vacancies",
+      "tag": "A",
+      "foreground": [
+        86,
+        99,
+        118
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.1,
+      "minimum": 4.5
+    },
+    {
+      "text": "Tenant: Synthetic Evidence Demo",
+      "tag": "SPAN",
+      "foreground": [
+        86,
+        99,
+        118
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.1,
+      "minimum": 4.5
+    },
+    {
+      "text": "Logout",
+      "tag": "BUTTON",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "Assessments",
+      "tag": "A",
+      "foreground": [
+        86,
+        99,
+        118
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.1,
+      "minimum": 4.5
+    },
+    {
+      "text": "/",
+      "tag": "SPAN",
+      "foreground": [
+        86,
+        99,
+        118
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.1,
+      "minimum": 4.5
+    },
+    {
+      "text": "Assessment sessions",
+      "tag": "A",
+      "foreground": [
+        86,
+        99,
+        118
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.1,
+      "minimum": 4.5
+    },
+    {
+      "text": "/",
+      "tag": "SPAN",
+      "foreground": [
+        86,
+        99,
+        118
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.1,
+      "minimum": 4.5
+    },
+    {
+      "text": "Evidence review",
+      "tag": "SPAN",
+      "foreground": [
+        86,
+        99,
+        118
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.1,
+      "minimum": 4.5
+    },
+    {
+      "text": "Interview portfolio",
+      "tag": "P",
+      "foreground": [
+        6,
+        109,
+        117
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.08,
+      "minimum": 4.5
+    },
+    {
+      "text": "Evidence before a decision.",
+      "tag": "H1",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 3
+    },
+    {
+      "text": "Synthetic demo candidate / Session 1. Review what was demonstrate",
+      "tag": "P",
+      "foreground": [
+        86,
+        99,
+        118
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.1,
+      "minimum": 4.5
+    },
+    {
+      "text": "Read transcript",
+      "tag": "A",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "Export JSON",
+      "tag": "BUTTON",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "Export PDF",
+      "tag": "BUTTON",
+      "foreground": [
+        250,
+        250,
+        250
+      ],
+      "background": [
+        6,
+        109,
+        117
+      ],
+      "ratio": 5.83,
+      "minimum": 4.5
+    },
+    {
+      "text": "Evidence coverage",
+      "tag": "SPAN",
+      "foreground": [
+        6,
+        109,
+        117
+      ],
+      "background": [
+        239,
+        247,
+        247
+      ],
+      "ratio": 5.6,
+      "minimum": 4.5
+    },
+    {
+      "text": "2 / 4 skills assessed",
+      "tag": "P",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        239,
+        247,
+        247
+      ],
+      "ratio": 16.44,
+      "minimum": 4.5
+    },
+    {
+      "text": "2 / 4",
+      "tag": "STRONG",
+      "foreground": [
+        6,
+        76,
+        82
+      ],
+      "background": [
+        239,
+        247,
+        247
+      ],
+      "ratio": 8.93,
+      "minimum": 3
+    },
+    {
+      "text": "/ 4",
+      "tag": "SPAN",
+      "foreground": [
+        82,
+        104,
+        108
+      ],
+      "background": [
+        239,
+        247,
+        247
+      ],
+      "ratio": 5.43,
+      "minimum": 4.5
+    },
+    {
+      "text": "2 skills need follow-up",
+      "tag": "STRONG",
+      "foreground": [
+        6,
+        76,
+        82
+      ],
+      "background": [
+        239,
+        247,
+        247
+      ],
+      "ratio": 8.93,
+      "minimum": 4.5
+    },
+    {
+      "text": "Missing evidence is not a low score. AI confidence describes inte",
+      "tag": "P",
+      "foreground": [
+        67,
+        92,
+        96
+      ],
+      "background": [
+        239,
+        247,
+        247
+      ],
+      "ratio": 6.57,
+      "minimum": 4.5
+    },
+    {
+      "text": "Skill evidence",
+      "tag": "H2",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "All (4)",
+      "tag": "BUTTON",
+      "foreground": [
+        7,
+        91,
+        99
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 7.82,
+      "minimum": 4.5
+    },
+    {
+      "text": "Follow-up (2)",
+      "tag": "BUTTON",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        241,
+        245,
+        246
+      ],
+      "ratio": 16.28,
+      "minimum": 4.5
+    },
+    {
+      "text": "Level",
+      "tag": "SPAN",
+      "foreground": [
+        7,
+        91,
+        99
+      ],
+      "background": [
+        229,
+        242,
+        242
+      ],
+      "ratio": 6.82,
+      "minimum": 4.5
+    },
+    {
+      "text": "4",
+      "tag": "STRONG",
+      "foreground": [
+        7,
+        91,
+        99
+      ],
+      "background": [
+        229,
+        242,
+        242
+      ],
+      "ratio": 6.82,
+      "minimum": 3
+    },
+    {
+      "text": "React / Frontend Development",
+      "tag": "H3",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "high confidence in AI rating",
+      "tag": "P",
+      "foreground": [
+        86,
+        99,
+        118
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.1,
+      "minimum": 4.5
+    },
+    {
+      "text": "Reviewer override: L4 / Original AI: L3",
+      "tag": "P",
+      "foreground": [
+        7,
+        91,
+        99
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 7.82,
+      "minimum": 4.5
+    },
+    {
+      "text": "Evidence available",
+      "tag": "SPAN",
+      "foreground": [
+        7,
+        91,
+        99
+      ],
+      "background": [
+        229,
+        242,
+        242
+      ],
+      "ratio": 6.82,
+      "minimum": 4.5
+    },
+    {
+      "text": "Synthetic fixture: describes a measured approach to state isolati",
+      "tag": "P",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "Candidate evidence (1)",
+      "tag": "SUMMARY",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "Excerpts matched to candidate transcript turns. Assess relevance ",
+      "tag": "P",
+      "foreground": [
+        86,
+        99,
+        118
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.1,
+      "minimum": 4.5
+    },
+    {
+      "text": "I split state by update frequency and measured the result with th",
+      "tag": "BLOCKQUOTE",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "Saved reviewer rationale",
+      "tag": "STRONG",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        239,
+        247,
+        247
+      ],
+      "ratio": 16.44,
+      "minimum": 4.5
+    },
+    {
+      "text": "Synthetic demo override: reviewed the excerpt in context. This is",
+      "tag": "P",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        239,
+        247,
+        247
+      ],
+      "ratio": 16.44,
+      "minimum": 4.5
+    },
+    {
+      "text": "Edit reviewer override",
+      "tag": "SUMMARY",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "Review the excerpt and its context first. The original AI rating ",
+      "tag": "P",
+      "foreground": [
+        86,
+        99,
+        118
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.1,
+      "minimum": 4.5
+    },
+    {
+      "text": "Reviewer level",
+      "tag": "LABEL",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "Level 1Level 2Level 3Level 4Level 5",
+      "tag": "SELECT",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "Reason for this rating (required)",
+      "tag": "LABEL",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "(required)",
+      "tag": "SPAN",
+      "foreground": [
+        86,
+        99,
+        118
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.1,
+      "minimum": 4.5
+    },
+    {
+      "text": "Synthetic demo override: reviewed the excerpt in context. This is",
+      "tag": "TEXTAREA",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "Save reviewer override",
+      "tag": "BUTTON",
+      "foreground": [
+        250,
+        250,
+        250
+      ],
+      "background": [
+        6,
+        109,
+        117
+      ],
+      "ratio": 5.83,
+      "minimum": 4.5
+    },
+    {
+      "text": "Level",
+      "tag": "SPAN",
+      "foreground": [
+        7,
+        91,
+        99
+      ],
+      "background": [
+        229,
+        242,
+        242
+      ],
+      "ratio": 6.82,
+      "minimum": 4.5
+    },
+    {
+      "text": "2",
+      "tag": "STRONG",
+      "foreground": [
+        7,
+        91,
+        99
+      ],
+      "background": [
+        229,
+        242,
+        242
+      ],
+      "ratio": 6.82,
+      "minimum": 3
+    },
+    {
+      "text": "Communication",
+      "tag": "H3",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "low confidence in AI rating",
+      "tag": "P",
+      "foreground": [
+        86,
+        99,
+        118
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.1,
+      "minimum": 4.5
+    },
+    {
+      "text": "Evidence available",
+      "tag": "SPAN",
+      "foreground": [
+        7,
+        91,
+        99
+      ],
+      "background": [
+        229,
+        242,
+        242
+      ],
+      "ratio": 6.82,
+      "minimum": 4.5
+    },
+    {
+      "text": "Synthetic fixture: describes communicating a status update with s",
+      "tag": "P",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "Limited interview signal. Probe this skill further if it is impor",
+      "tag": "P",
+      "foreground": [
+        112,
+        80,
+        20
+      ],
+      "background": [
+        255,
+        247,
+        226
+      ],
+      "ratio": 6.9,
+      "minimum": 4.5
+    },
+    {
+      "text": "Candidate evidence (1)",
+      "tag": "SUMMARY",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "Excerpts matched to candidate transcript turns. Assess relevance ",
+      "tag": "P",
+      "foreground": [
+        86,
+        99,
+        118
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.1,
+      "minimum": 4.5
+    },
+    {
+      "text": "I wrote an incident update but relied on my lead to align stakeho",
+      "tag": "BLOCKQUOTE",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "Review or override rating",
+      "tag": "SUMMARY",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "Review the excerpt and its context first. The original AI rating ",
+      "tag": "P",
+      "foreground": [
+        86,
+        99,
+        118
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.1,
+      "minimum": 4.5
+    },
+    {
+      "text": "Reviewer level",
+      "tag": "LABEL",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "Level 1Level 2Level 3Level 4Level 5",
+      "tag": "SELECT",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "Reason for this rating (required)",
+      "tag": "LABEL",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "(required)",
+      "tag": "SPAN",
+      "foreground": [
+        86,
+        99,
+        118
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.1,
+      "minimum": 4.5
+    },
+    {
+      "text": "",
+      "tag": "TEXTAREA",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "?",
+      "tag": "STRONG",
+      "foreground": [
+        121,
+        81,
+        0
+      ],
+      "background": [
+        255,
+        243,
+        212
+      ],
+      "ratio": 6.36,
+      "minimum": 3
+    },
+    {
+      "text": "System Design",
+      "tag": "H3",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "Not assessed",
+      "tag": "P",
+      "foreground": [
+        86,
+        99,
+        118
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.1,
+      "minimum": 4.5
+    },
+    {
+      "text": "Follow-up needed",
+      "tag": "SPAN",
+      "foreground": [
+        121,
+        81,
+        0
+      ],
+      "background": [
+        255,
+        243,
+        212
+      ],
+      "ratio": 6.36,
+      "minimum": 4.5
+    },
+    {
+      "text": "The model did not return an assessment for this skill.",
+      "tag": "P",
+      "foreground": [
+        112,
+        80,
+        20
+      ],
+      "background": [
+        255,
+        247,
+        226
+      ],
+      "ratio": 6.9,
+      "minimum": 4.5
+    },
+    {
+      "text": "Collect a focused follow-up assessment. Missing evidence is not a",
+      "tag": "P",
+      "foreground": [
+        112,
+        80,
+        20
+      ],
+      "background": [
+        255,
+        247,
+        226
+      ],
+      "ratio": 6.9,
+      "minimum": 4.5
+    },
+    {
+      "text": "?",
+      "tag": "STRONG",
+      "foreground": [
+        121,
+        81,
+        0
+      ],
+      "background": [
+        255,
+        243,
+        212
+      ],
+      "ratio": 6.36,
+      "minimum": 3
+    },
+    {
+      "text": "Database Design & SQL",
+      "tag": "H3",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "Not assessed",
+      "tag": "P",
+      "foreground": [
+        86,
+        99,
+        118
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.1,
+      "minimum": 4.5
+    },
+    {
+      "text": "Follow-up needed",
+      "tag": "SPAN",
+      "foreground": [
+        121,
+        81,
+        0
+      ],
+      "background": [
+        255,
+        243,
+        212
+      ],
+      "ratio": 6.36,
+      "minimum": 4.5
+    },
+    {
+      "text": "The model did not return an assessment for this skill.",
+      "tag": "P",
+      "foreground": [
+        112,
+        80,
+        20
+      ],
+      "background": [
+        255,
+        247,
+        226
+      ],
+      "ratio": 6.9,
+      "minimum": 4.5
+    },
+    {
+      "text": "Collect a focused follow-up assessment. Missing evidence is not a",
+      "tag": "P",
+      "foreground": [
+        112,
+        80,
+        20
+      ],
+      "background": [
+        255,
+        247,
+        226
+      ],
+      "ratio": 6.9,
+      "minimum": 4.5
+    },
+    {
+      "text": "Continue the review",
+      "tag": "H2",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "Compare the evidence against a role. Unassessed skills stay unass",
+      "tag": "P",
+      "foreground": [
+        86,
+        99,
+        118
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.1,
+      "minimum": 4.5
+    },
+    {
+      "text": "Role to compare",
+      "tag": "LABEL",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "Choose a vacancyFrontend Engineer / synthetic role",
+      "tag": "SELECT",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "Before making a decision",
+      "tag": "H3",
+      "foreground": [
+        36,
+        56,
+        64
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 12.25,
+      "minimum": 4.5
+    },
+    {
+      "text": "Read evidence in its transcript context.",
+      "tag": "LI",
+      "foreground": [
+        82,
+        97,
+        106
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.41,
+      "minimum": 4.5
+    },
+    {
+      "text": "Probe missing or limited signal.",
+      "tag": "LI",
+      "foreground": [
+        82,
+        97,
+        106
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.41,
+      "minimum": 4.5
+    },
+    {
+      "text": "Record a reason for rating changes.",
+      "tag": "LI",
+      "foreground": [
+        82,
+        97,
+        106
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.41,
+      "minimum": 4.5
+    },
+    {
+      "text": "Rakamin AI Interview",
+      "tag": "SPAN",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "Assessments",
+      "tag": "A",
+      "foreground": [
+        6,
+        109,
+        117
+      ],
+      "background": [
+        230,
+        240,
+        241
+      ],
+      "ratio": 5.26,
+      "minimum": 4.5
+    },
+    {
+      "text": "Vacancies",
+      "tag": "A",
+      "foreground": [
+        86,
+        99,
+        118
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.1,
+      "minimum": 4.5
+    },
+    {
+      "text": "Tenant: Synthetic Evidence Demo",
+      "tag": "SPAN",
+      "foreground": [
+        86,
+        99,
+        118
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.1,
+      "minimum": 4.5
+    },
+    {
+      "text": "Logout",
+      "tag": "BUTTON",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "Assessments",
+      "tag": "A",
+      "foreground": [
+        86,
+        99,
+        118
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.1,
+      "minimum": 4.5
+    },
+    {
+      "text": "/",
+      "tag": "SPAN",
+      "foreground": [
+        86,
+        99,
+        118
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.1,
+      "minimum": 4.5
+    },
+    {
+      "text": "Assessment sessions",
+      "tag": "A",
+      "foreground": [
+        86,
+        99,
+        118
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.1,
+      "minimum": 4.5
+    },
+    {
+      "text": "/",
+      "tag": "SPAN",
+      "foreground": [
+        86,
+        99,
+        118
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.1,
+      "minimum": 4.5
+    },
+    {
+      "text": "Evidence review",
+      "tag": "SPAN",
+      "foreground": [
+        86,
+        99,
+        118
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.1,
+      "minimum": 4.5
+    },
+    {
+      "text": "Interview portfolio",
+      "tag": "P",
+      "foreground": [
+        6,
+        109,
+        117
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.08,
+      "minimum": 4.5
+    },
+    {
+      "text": "Evidence before a decision.",
+      "tag": "H1",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 3
+    },
+    {
+      "text": "Synthetic demo candidate / Session 1. Review what was demonstrate",
+      "tag": "P",
+      "foreground": [
+        86,
+        99,
+        118
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.1,
+      "minimum": 4.5
+    },
+    {
+      "text": "Read transcript",
+      "tag": "A",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "Export JSON",
+      "tag": "BUTTON",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "Export PDF",
+      "tag": "BUTTON",
+      "foreground": [
+        250,
+        250,
+        250
+      ],
+      "background": [
+        6,
+        109,
+        117
+      ],
+      "ratio": 5.83,
+      "minimum": 4.5
+    },
+    {
+      "text": "Evidence coverage",
+      "tag": "SPAN",
+      "foreground": [
+        6,
+        109,
+        117
+      ],
+      "background": [
+        239,
+        247,
+        247
+      ],
+      "ratio": 5.6,
+      "minimum": 4.5
+    },
+    {
+      "text": "2 / 4 skills assessed",
+      "tag": "P",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        239,
+        247,
+        247
+      ],
+      "ratio": 16.44,
+      "minimum": 4.5
+    },
+    {
+      "text": "2 / 4",
+      "tag": "STRONG",
+      "foreground": [
+        6,
+        76,
+        82
+      ],
+      "background": [
+        239,
+        247,
+        247
+      ],
+      "ratio": 8.93,
+      "minimum": 3
+    },
+    {
+      "text": "/ 4",
+      "tag": "SPAN",
+      "foreground": [
+        82,
+        104,
+        108
+      ],
+      "background": [
+        239,
+        247,
+        247
+      ],
+      "ratio": 5.43,
+      "minimum": 4.5
+    },
+    {
+      "text": "2 skills need follow-up",
+      "tag": "STRONG",
+      "foreground": [
+        6,
+        76,
+        82
+      ],
+      "background": [
+        239,
+        247,
+        247
+      ],
+      "ratio": 8.93,
+      "minimum": 4.5
+    },
+    {
+      "text": "Missing evidence is not a low score. AI confidence describes inte",
+      "tag": "P",
+      "foreground": [
+        67,
+        92,
+        96
+      ],
+      "background": [
+        239,
+        247,
+        247
+      ],
+      "ratio": 6.57,
+      "minimum": 4.5
+    },
+    {
+      "text": "Skill evidence",
+      "tag": "H2",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "All (4)",
+      "tag": "BUTTON",
+      "foreground": [
+        7,
+        91,
+        99
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 7.82,
+      "minimum": 4.5
+    },
+    {
+      "text": "Follow-up (2)",
+      "tag": "BUTTON",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        241,
+        245,
+        246
+      ],
+      "ratio": 16.28,
+      "minimum": 4.5
+    },
+    {
+      "text": "Level",
+      "tag": "SPAN",
+      "foreground": [
+        7,
+        91,
+        99
+      ],
+      "background": [
+        229,
+        242,
+        242
+      ],
+      "ratio": 6.82,
+      "minimum": 4.5
+    },
+    {
+      "text": "4",
+      "tag": "STRONG",
+      "foreground": [
+        7,
+        91,
+        99
+      ],
+      "background": [
+        229,
+        242,
+        242
+      ],
+      "ratio": 6.82,
+      "minimum": 3
+    },
+    {
+      "text": "React / Frontend Development",
+      "tag": "H3",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "high confidence in AI rating",
+      "tag": "P",
+      "foreground": [
+        86,
+        99,
+        118
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.1,
+      "minimum": 4.5
+    },
+    {
+      "text": "Reviewer override: L4 / Original AI: L3",
+      "tag": "P",
+      "foreground": [
+        7,
+        91,
+        99
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 7.82,
+      "minimum": 4.5
+    },
+    {
+      "text": "Evidence available",
+      "tag": "SPAN",
+      "foreground": [
+        7,
+        91,
+        99
+      ],
+      "background": [
+        229,
+        242,
+        242
+      ],
+      "ratio": 6.82,
+      "minimum": 4.5
+    },
+    {
+      "text": "Synthetic fixture: describes a measured approach to state isolati",
+      "tag": "P",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "Candidate evidence (1)",
+      "tag": "SUMMARY",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "Excerpts matched to candidate transcript turns. Assess relevance ",
+      "tag": "P",
+      "foreground": [
+        86,
+        99,
+        118
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.1,
+      "minimum": 4.5
+    },
+    {
+      "text": "I split state by update frequency and measured the result with th",
+      "tag": "BLOCKQUOTE",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "Saved reviewer rationale",
+      "tag": "STRONG",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        239,
+        247,
+        247
+      ],
+      "ratio": 16.44,
+      "minimum": 4.5
+    },
+    {
+      "text": "Synthetic demo override: reviewed the excerpt in context. This is",
+      "tag": "P",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        239,
+        247,
+        247
+      ],
+      "ratio": 16.44,
+      "minimum": 4.5
+    },
+    {
+      "text": "Edit reviewer override",
+      "tag": "SUMMARY",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "Review the excerpt and its context first. The original AI rating ",
+      "tag": "P",
+      "foreground": [
+        86,
+        99,
+        118
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.1,
+      "minimum": 4.5
+    },
+    {
+      "text": "Reviewer level",
+      "tag": "LABEL",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "Level 1Level 2Level 3Level 4Level 5",
+      "tag": "SELECT",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "Reason for this rating (required)",
+      "tag": "LABEL",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "(required)",
+      "tag": "SPAN",
+      "foreground": [
+        86,
+        99,
+        118
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.1,
+      "minimum": 4.5
+    },
+    {
+      "text": "Synthetic failed-save fixture for contrast verification.",
+      "tag": "TEXTAREA",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "The override was not saved. Your notes are still here. Please ret",
+      "tag": "P",
+      "foreground": [
+        138,
+        48,
+        32
+      ],
+      "background": [
+        255,
+        243,
+        240
+      ],
+      "ratio": 7.66,
+      "minimum": 4.5
+    },
+    {
+      "text": "Save reviewer override",
+      "tag": "BUTTON",
+      "foreground": [
+        250,
+        250,
+        250
+      ],
+      "background": [
+        6,
+        109,
+        117
+      ],
+      "ratio": 5.83,
+      "minimum": 4.5
+    },
+    {
+      "text": "Level",
+      "tag": "SPAN",
+      "foreground": [
+        7,
+        91,
+        99
+      ],
+      "background": [
+        229,
+        242,
+        242
+      ],
+      "ratio": 6.82,
+      "minimum": 4.5
+    },
+    {
+      "text": "2",
+      "tag": "STRONG",
+      "foreground": [
+        7,
+        91,
+        99
+      ],
+      "background": [
+        229,
+        242,
+        242
+      ],
+      "ratio": 6.82,
+      "minimum": 3
+    },
+    {
+      "text": "Communication",
+      "tag": "H3",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "low confidence in AI rating",
+      "tag": "P",
+      "foreground": [
+        86,
+        99,
+        118
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.1,
+      "minimum": 4.5
+    },
+    {
+      "text": "Evidence available",
+      "tag": "SPAN",
+      "foreground": [
+        7,
+        91,
+        99
+      ],
+      "background": [
+        229,
+        242,
+        242
+      ],
+      "ratio": 6.82,
+      "minimum": 4.5
+    },
+    {
+      "text": "Synthetic fixture: describes communicating a status update with s",
+      "tag": "P",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "Limited interview signal. Probe this skill further if it is impor",
+      "tag": "P",
+      "foreground": [
+        112,
+        80,
+        20
+      ],
+      "background": [
+        255,
+        247,
+        226
+      ],
+      "ratio": 6.9,
+      "minimum": 4.5
+    },
+    {
+      "text": "Candidate evidence (1)",
+      "tag": "SUMMARY",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "Excerpts matched to candidate transcript turns. Assess relevance ",
+      "tag": "P",
+      "foreground": [
+        86,
+        99,
+        118
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.1,
+      "minimum": 4.5
+    },
+    {
+      "text": "I wrote an incident update but relied on my lead to align stakeho",
+      "tag": "BLOCKQUOTE",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "Review or override rating",
+      "tag": "SUMMARY",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "Review the excerpt and its context first. The original AI rating ",
+      "tag": "P",
+      "foreground": [
+        86,
+        99,
+        118
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.1,
+      "minimum": 4.5
+    },
+    {
+      "text": "Reviewer level",
+      "tag": "LABEL",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "Level 1Level 2Level 3Level 4Level 5",
+      "tag": "SELECT",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "Reason for this rating (required)",
+      "tag": "LABEL",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "(required)",
+      "tag": "SPAN",
+      "foreground": [
+        86,
+        99,
+        118
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.1,
+      "minimum": 4.5
+    },
+    {
+      "text": "",
+      "tag": "TEXTAREA",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "?",
+      "tag": "STRONG",
+      "foreground": [
+        121,
+        81,
+        0
+      ],
+      "background": [
+        255,
+        243,
+        212
+      ],
+      "ratio": 6.36,
+      "minimum": 3
+    },
+    {
+      "text": "System Design",
+      "tag": "H3",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "Not assessed",
+      "tag": "P",
+      "foreground": [
+        86,
+        99,
+        118
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.1,
+      "minimum": 4.5
+    },
+    {
+      "text": "Follow-up needed",
+      "tag": "SPAN",
+      "foreground": [
+        121,
+        81,
+        0
+      ],
+      "background": [
+        255,
+        243,
+        212
+      ],
+      "ratio": 6.36,
+      "minimum": 4.5
+    },
+    {
+      "text": "The model did not return an assessment for this skill.",
+      "tag": "P",
+      "foreground": [
+        112,
+        80,
+        20
+      ],
+      "background": [
+        255,
+        247,
+        226
+      ],
+      "ratio": 6.9,
+      "minimum": 4.5
+    },
+    {
+      "text": "Collect a focused follow-up assessment. Missing evidence is not a",
+      "tag": "P",
+      "foreground": [
+        112,
+        80,
+        20
+      ],
+      "background": [
+        255,
+        247,
+        226
+      ],
+      "ratio": 6.9,
+      "minimum": 4.5
+    },
+    {
+      "text": "?",
+      "tag": "STRONG",
+      "foreground": [
+        121,
+        81,
+        0
+      ],
+      "background": [
+        255,
+        243,
+        212
+      ],
+      "ratio": 6.36,
+      "minimum": 3
+    },
+    {
+      "text": "Database Design & SQL",
+      "tag": "H3",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "Not assessed",
+      "tag": "P",
+      "foreground": [
+        86,
+        99,
+        118
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.1,
+      "minimum": 4.5
+    },
+    {
+      "text": "Follow-up needed",
+      "tag": "SPAN",
+      "foreground": [
+        121,
+        81,
+        0
+      ],
+      "background": [
+        255,
+        243,
+        212
+      ],
+      "ratio": 6.36,
+      "minimum": 4.5
+    },
+    {
+      "text": "The model did not return an assessment for this skill.",
+      "tag": "P",
+      "foreground": [
+        112,
+        80,
+        20
+      ],
+      "background": [
+        255,
+        247,
+        226
+      ],
+      "ratio": 6.9,
+      "minimum": 4.5
+    },
+    {
+      "text": "Collect a focused follow-up assessment. Missing evidence is not a",
+      "tag": "P",
+      "foreground": [
+        112,
+        80,
+        20
+      ],
+      "background": [
+        255,
+        247,
+        226
+      ],
+      "ratio": 6.9,
+      "minimum": 4.5
+    },
+    {
+      "text": "Continue the review",
+      "tag": "H2",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "Compare the evidence against a role. Unassessed skills stay unass",
+      "tag": "P",
+      "foreground": [
+        86,
+        99,
+        118
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.1,
+      "minimum": 4.5
+    },
+    {
+      "text": "Role to compare",
+      "tag": "LABEL",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "Choose a vacancyFrontend Engineer / synthetic role",
+      "tag": "SELECT",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "Before making a decision",
+      "tag": "H3",
+      "foreground": [
+        36,
+        56,
+        64
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 12.25,
+      "minimum": 4.5
+    },
+    {
+      "text": "Read evidence in its transcript context.",
+      "tag": "LI",
+      "foreground": [
+        82,
+        97,
+        106
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.41,
+      "minimum": 4.5
+    },
+    {
+      "text": "Probe missing or limited signal.",
+      "tag": "LI",
+      "foreground": [
+        82,
+        97,
+        106
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.41,
+      "minimum": 4.5
+    },
+    {
+      "text": "Record a reason for rating changes.",
+      "tag": "LI",
+      "foreground": [
+        82,
+        97,
+        106
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.41,
+      "minimum": 4.5
+    },
+    {
+      "text": "Rakamin AI Interview",
+      "tag": "SPAN",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "Assessments",
+      "tag": "A",
+      "foreground": [
+        6,
+        109,
+        117
+      ],
+      "background": [
+        230,
+        240,
+        241
+      ],
+      "ratio": 5.26,
+      "minimum": 4.5
+    },
+    {
+      "text": "Vacancies",
+      "tag": "A",
+      "foreground": [
+        86,
+        99,
+        118
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.1,
+      "minimum": 4.5
+    },
+    {
+      "text": "Tenant: Synthetic Evidence Demo",
+      "tag": "SPAN",
+      "foreground": [
+        86,
+        99,
+        118
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.1,
+      "minimum": 4.5
+    },
+    {
+      "text": "Logout",
+      "tag": "BUTTON",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    },
+    {
+      "text": "Evidence review",
+      "tag": "A",
+      "foreground": [
+        86,
+        99,
+        118
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.1,
+      "minimum": 4.5
+    },
+    {
+      "text": "/",
+      "tag": "SPAN",
+      "foreground": [
+        86,
+        99,
+        118
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.1,
+      "minimum": 4.5
+    },
+    {
+      "text": "Role comparison",
+      "tag": "SPAN",
+      "foreground": [
+        86,
+        99,
+        118
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.1,
+      "minimum": 4.5
+    },
+    {
+      "text": "Fit / gap analysis",
+      "tag": "P",
+      "foreground": [
+        6,
+        109,
+        117
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.08,
+      "minimum": 4.5
+    },
+    {
+      "text": "Compare evidence, fairly.",
+      "tag": "H1",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 3
+    },
+    {
+      "text": "A skill gap and an unassessed skill require different next steps.",
+      "tag": "P",
+      "foreground": [
+        86,
+        99,
+        118
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 6.1,
+      "minimum": 4.5
+    },
+    {
+      "text": "Comparing assessed evidence with role requirements...",
+      "tag": "P",
+      "foreground": [
+        15,
+        23,
+        41
+      ],
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "ratio": 17.87,
+      "minimum": 4.5
+    }
+  ]
+}

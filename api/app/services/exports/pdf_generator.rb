@@ -116,7 +116,7 @@ module Exports
     def render_fit_gap_section(pdf)
       pdf.start_new_page
 
-      pdf.font_size(16) { pdf.text "Fit/Gap Analysis — #{@vacancy.role_title}", style: :bold }
+      pdf.font_size(16) { pdf.text "Fit/Gap Analysis / #{@vacancy.role_title}", style: :bold }
       pdf.move_down 8
 
       comparisons = @fit_gap.skill_comparisons

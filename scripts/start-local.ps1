@@ -5,6 +5,10 @@ $taskRoot = Split-Path $PSScriptRoot -Parent
 if ($LASTEXITCODE -ne 0) {
   & "$taskRoot/.runtime/postgres/pgsql/bin/pg_ctl.exe" -D "$taskRoot/.runtime/pgdata" -l "$taskRoot/.runtime/postgres.log" -o '-h 127.0.0.1 -p 54329' start
 }
+$taskDatabaseExists = & "$taskRoot/.runtime/postgres/pgsql/bin/psql.exe" -h 127.0.0.1 -p 54329 -U postgres -d postgres -tAc "SELECT 1 FROM pg_database WHERE datname='rakamin_development'"
+if (-not $taskDatabaseExists) {
+  & "$taskRoot/.runtime/postgres/pgsql/bin/createdb.exe" -h 127.0.0.1 -p 54329 -U postgres rakamin_development
+}
 Push-Location "$taskRoot/api"
 try {
   $env:RAILS_ENV = 'development'

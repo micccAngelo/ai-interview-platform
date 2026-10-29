@@ -1,0 +1,9 @@
+PASS: Export PDF downloads a valid PDF
+PASS: Export comparison PDF downloads a valid PDF
+PASS: Assessment sessions breadcrumb opens the existing session page
+PASS: Assessments breadcrumb opens assessment list
+PASS: Vacancies navigation opens vacancy list
+PASS: Assessments navigation and existing brand link open assessment list
+PASS: Empty-role action opens existing vacancy creation page (no vacancy submitted)
+PASS: Logout clears browser token and opens login
+PASS: No browser page errors in the recorded navigation/export checks

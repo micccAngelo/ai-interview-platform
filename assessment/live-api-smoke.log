@@ -1,0 +1,1 @@
+PASS: live Rails API returns 4 skills, 2 assessed and 2 null ratings. SQL remains not_assessed with expected_level=4. Real JSON and PDF exports saved. No model provider was called.

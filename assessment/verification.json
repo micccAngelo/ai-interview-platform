@@ -1,0 +1,36 @@
+{
+  "date": "2026-10-30",
+  "timezone": "Asia/Jakarta",
+  "branch": "feat/evidence-first-assessment",
+  "source_head": "0629d355796b0f4d94d8524ce35ce0087ae990c5",
+  "source_head_description": "Implementation snapshot before final documentation and packaging commits.",
+  "publication_choice": "Keep everything in Rakamin2, per the user instruction. No external publication or portal submission.",
+  "baseline": "b836d02",
+  "backend_status": "passed",
+  "backend_examples": 47,
+  "frontend_tests": 11,
+  "browser_tests": 3,
+  "production_build": "passed",
+  "live_control_checks": 9,
+  "live_api_summary": "PASS: live Rails API returns 4 skills, 2 assessed and 2 null ratings. SQL remains not_assessed with expected_level=4. Real JSON and PDF exports saved. No model provider was called.",
+  "contrast_samples": 177,
+  "contrast_pairs": 18,
+  "video_local_status": "complete",
+  "video_duration_seconds": 219.68,
+  "ci_status": "Configuration supplied; GitHub execution not yet verified.",
+  "pr_url": null,
+  "video_url": null,
+  "seeded_fault": {
+    "branch": "test/seeded-missing-rating",
+    "mutant": "fbd99f85174bc508ad4b18325176fd73b2ac9829",
+    "revert": "dc5058b2df147f72d351a5491d097e13633d1a31",
+    "result": "1 example, 1 expected failure; after revert, 1 example, 0 failures. Assertions unchanged."
+  },
+  "limitations": [
+    "No live Gemini or microphone interview",
+    "Synthetic fixtures only",
+    "Docker setup not executed",
+    "No fairness calibration or legal compliance certification",
+    "PDF font coverage beyond Latin not validated"
+  ]
+}

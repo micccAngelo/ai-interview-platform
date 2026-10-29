@@ -1,0 +1,100 @@
+
+Randomized with seed 2525
+
+PortfolioGeneratorWorker
+  does not let an exhausted older job clobber a completed portfolio
+  stores only a safe message when retries exhaust
+
+Concurrent duplicate portfolio jobs
+  calls the model once and publishes one complete result under two workers
+
+Gemini::HttpClient
+  never logs a raw provider response body
+  recovers from a transient provider response with the real retry middleware
+
+Comparison edge cases
+  does not promote a legacy rating to assessed evidence
+  matches canonical identifiers consistently across case differences
+  does not choose arbitrarily between ambiguous custom labels
+  rejects comparison without any vacancy requirements
+
+PreserveUnassessedPortfolioSkills
+-- select_value("SELECT COUNT(*) FROM portfolio_skills WHERE ai_level IS NULL")
+   -> 0.0006s
+   -> 1 rows
+  refuses a destructive rollback while unassessed rows exist
+-- select_value("SELECT COUNT(*) FROM portfolio_skills WHERE ai_level IS NULL")
+   -> 0.0007s
+   -> 0 rows
+-- remove_check_constraint(:portfolio_skills, {:name=>"chk_portfolio_skills_assessment_status"})
+   -> 0.1540s
+-- change_column_null(:portfolio_skills, :ai_level, false)
+   -> 0.0670s
+-- remove_column(:portfolio_skills, :assessment_reason)
+   -> 0.1073s
+-- remove_column(:portfolio_skills, :assessment_status)
+   -> 0.0019s
+-- add_column(:portfolio_skills, :assessment_status, :string, {:null=>false, :default=>"legacy"})
+   -> 0.1050s
+-- add_column(:portfolio_skills, :assessment_reason, :string)
+   -> 0.0009s
+-- change_column_null(:portfolio_skills, :ai_level, true)
+   -> 0.0006s
+-- add_check_constraint(:portfolio_skills, "(assessment_status = 'not_assessed' AND ai_level IS NULL) OR (assessment_status IN ('assessed', 'legacy') AND ai_level IS NOT NULL)", {:name=>"chk_portfolio_skills_assessment_status"})
+   -> 0.0202s
+  round-trips legacy data without changing its original score
+  enforces rating and status consistency at the database boundary
+
+Portfolios::Generator
+  does not replace results when the model response shape is invalid
+  preserves existing results and stores a safe error on model failure
+  rolls back partial replacement writes if a later row fails
+  commits the complete validated portfolio and skips duplicate jobs
+
+Evidence review endpoints
+  does not expose historical raw provider errors
+  rejects candidate roles from assessor evidence
+  returns real integer and null levels with assessment status
+  requires a rationale and refuses to guess an unassessed level
+  saves an override and recomputes comparison without a model call
+PDF's built-in fonts have very limited support for internationalized text.
+If you need full UTF-8 support, consider using an external font instead.
+
+To disable this warning, add the following line to your code:
+Prawn::Fonts::AFM.hide_m17n_warning = true
+  exports the same unassessed semantics in a real PDF
+  disables the standalone tenant-selecting login by default
+  does not let a tenant header repair a token without an organization claim
+  keeps failed status retryable when queueing fails
+  blocks foreign portfolio, export, fitgap and override IDs
+
+FitGap::Engine
+  does not match a different canonical identity by a shared label
+  rejects cross-tenant background work
+  applies attributed overrides while retaining the original AI level
+  preserves missing evidence as not_assessed and uses expected_level
+
+Portfolios::ResponseValidator
+  does not coerce [] into a rating
+  does not coerce "3" into a rating
+  includes omitted configured skills without inventing a rating
+  does not coerce nil into a rating
+  does not coerce false into a rating
+  does not coerce 3.5 into a rating
+  does not coerce 0 into a rating
+  does not coerce 6 into a rating
+  never rates an untouched skill even when the model claims evidence
+  does not coerce {} into a rating
+  rejects duplicate identities, unknown skills and malformed payloads
+  does not coerce true into a rating
+  caps confidence using coverage rather than trusting the model
+  does not accept invented quotes
+  does not accept interviewer-only evidence
+  normalizes whitespace when checking candidate provenance
+  does not expose an oversized or missing model summary
+
+Finished in 20.82 seconds (files took 37.28 seconds to load)
+47 examples, 0 failures
+
+Randomized with seed 2525
+

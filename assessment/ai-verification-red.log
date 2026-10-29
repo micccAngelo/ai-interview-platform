@@ -1,0 +1,113 @@
+
+Randomized with seed 37408
+
+PortfolioGeneratorWorker
+  does not let an exhausted older job clobber a completed portfolio
+  stores only a safe message when retries exhaust
+
+Evidence review endpoints
+PDF's built-in fonts have very limited support for internationalized text.
+If you need full UTF-8 support, consider using an external font instead.
+
+To disable this warning, add the following line to your code:
+Prawn::Fonts::AFM.hide_m17n_warning = true
+  exports the same unassessed semantics in a real PDF
+  saves an override and recomputes comparison without a model call
+  disables the standalone tenant-selecting login by default
+  returns real integer and null levels with assessment status
+  blocks foreign portfolio, export, fitgap and override IDs
+  requires a rationale and refuses to guess an unassessed level
+  keeps failed status retryable when queueing fails
+  rejects candidate roles from assessor evidence
+  does not let a tenant header repair a token without an organization claim
+
+Gemini::HttpClient
+  recovers from a transient provider response with the real retry middleware
+  never logs a raw provider response body
+
+FitGap::Engine
+  preserves missing evidence as not_assessed and uses expected_level
+  applies attributed overrides while retaining the original AI level
+  rejects cross-tenant background work
+  does not match a different canonical identity by a shared label
+
+Comparison edge cases
+  does not choose arbitrarily between ambiguous custom labels
+  rejects comparison without any vacancy requirements
+  matches canonical identifiers consistently across case differences
+  does not promote a legacy rating to assessed evidence
+
+PreserveUnassessedPortfolioSkills
+-- select_value("SELECT COUNT(*) FROM portfolio_skills WHERE ai_level IS NULL")
+   -> 0.0011s
+   -> 0 rows
+-- remove_check_constraint(:portfolio_skills, {:name=>"chk_portfolio_skills_assessment_status"})
+   -> 0.0328s
+-- change_column_null(:portfolio_skills, :ai_level, false)
+   -> 0.0044s
+-- remove_column(:portfolio_skills, :assessment_reason)
+   -> 0.0013s
+-- remove_column(:portfolio_skills, :assessment_status)
+   -> 0.0016s
+-- add_column(:portfolio_skills, :assessment_status, :string, {:null=>false, :default=>"legacy"})
+   -> 0.0431s
+-- add_column(:portfolio_skills, :assessment_reason, :string)
+   -> 0.0008s
+-- change_column_null(:portfolio_skills, :ai_level, true)
+   -> 0.0006s
+-- add_check_constraint(:portfolio_skills, "(assessment_status = 'not_assessed' AND ai_level IS NULL) OR (assessment_status IN ('assessed', 'legacy') AND ai_level IS NOT NULL)", {:name=>"chk_portfolio_skills_assessment_status"})
+   -> 0.0154s
+  round-trips legacy data without changing its original score
+-- select_value("SELECT COUNT(*) FROM portfolio_skills WHERE ai_level IS NULL")
+   -> 0.0006s
+   -> 1 rows
+  refuses a destructive rollback while unassessed rows exist
+
+Portfolios::ResponseValidator
+  caps confidence using coverage rather than trusting the model
+  does not coerce nil into a rating
+  does not coerce 6 into a rating
+  never rates an untouched skill even when the model claims evidence
+  does not coerce true into a rating
+  normalizes whitespace when checking candidate provenance
+  does not coerce [] into a rating
+  does not accept invented quotes
+  does not coerce 0 into a rating
+  rejects duplicate identities, unknown skills and malformed payloads
+  does not coerce 3.5 into a rating
+  includes omitted configured skills without inventing a rating
+  does not accept interviewer-only evidence
+  does not coerce "3" into a rating
+  does not expose an oversized or missing model summary
+  does not coerce {} into a rating
+  does not coerce false into a rating
+
+Portfolios::Generator
+  rolls back partial replacement writes if a later row fails (FAILED - 1)
+  preserves existing results and stores a safe error on model failure
+  does not replace results when the model response shape is invalid
+  commits the complete validated portfolio and skips duplicate jobs
+
+Concurrent duplicate portfolio jobs
+  calls the model once and publishes one complete result under two workers
+
+Failures:
+
+  1) Portfolios::Generator rolls back partial replacement writes if a later row fails
+     Failure/Error: expect(@portfolio.portfolio_skills.pluck(:id)).to eq([original.id])
+
+       expected: [89]
+            got: [89, 91]
+
+       (compared using ==)
+     # ./spec/services/evidence_pipeline_spec.rb:76:in `block (2 levels) in <main>'
+
+Finished in 7.23 seconds (files took 10.02 seconds to load)
+45 examples, 1 failure
+
+Failed examples:
+
+rspec ./spec/services/evidence_pipeline_spec.rb:68 # Portfolios::Generator rolls back partial replacement writes if a later row fails
+
+Randomized with seed 37408
+

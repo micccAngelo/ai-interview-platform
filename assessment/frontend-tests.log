@@ -1,0 +1,24 @@
+
+> ai-interview-web@0.0.0 test
+> vitest run --reporter=verbose
+
+
+ RUN  v3.2.7 C:/Rakamin2/web
+
+ ✓ tests/evidence-review.test.tsx > evidence review workflow > separates assessed and missing evidence without inventing a low score 263ms
+ ✓ tests/evidence-review.test.tsx > evidence review workflow > filters follow-up work and restores the complete view 515ms
+ ✓ tests/evidence-review.test.tsx > evidence review workflow > exposes a network failure and supports retry 192ms
+ ✓ tests/evidence-review.test.tsx > evidence review workflow > shows loading while the request is pending 46ms
+ ✓ tests/evidence-review.test.tsx > evidence review workflow > distinguishes pending generation from an empty result 49ms
+ ✓ tests/evidence-review.test.tsx > evidence review workflow > retries failed generation through the real session client 194ms
+ ✓ tests/evidence-review.test.tsx > evidence review workflow > provides an actionable empty state 88ms
+ ✓ tests/evidence-review.test.tsx > evidence review workflow > does not present legacy ratings as verified 17ms
+ ✓ tests/evidence-review.test.tsx > evidence review workflow > requires rationale and preserves notes after a failed override save 1824ms
+ ✓ tests/evidence-review.test.tsx > evidence review workflow > reads expected_level from the API and keeps null unassessed 30ms
+ ✓ tests/evidence-review.test.tsx > evidence review workflow > renders long model text literally 47ms
+
+ Test Files  1 passed (1)
+      Tests  11 passed (11)
+   Start at  23:38:33
+   Duration  98.55s (transform 652ms, setup 15.73s, collect 4.97s, tests 3.27s, environment 46.95s, prepare 3.17s)
+
