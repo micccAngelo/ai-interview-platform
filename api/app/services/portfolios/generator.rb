@@ -9,31 +9,46 @@ module Portfolios
       @session = session
       @gemini_client = gemini_client || Gemini::HttpClient.new(
         model:   ENV.fetch('GEMINI_PRO_MODEL', 'gemini-2.0-pro-001'),
-        timeout: 180  # up to 3 minutes for large transcripts
+        timeout: 180,
+        retries: 0 # Sidekiq owns retries; avoid nested provider retries while holding the session lock.
       )
     end
 
     # Returns the Portfolio record with skills populated.
     def call
-      portfolio = @session.portfolio || @session.create_portfolio!(
-        candidate_id:      @session.candidate_id,
-        generation_status: 'pending'
-      )
+      failure = nil
+      portfolio = nil
+      # The session lock also protects first creation, before a portfolio row exists.
+      @session.with_lock do
+        @session.reload
+        raise ResponseValidator::InvalidResponse, 'Session must be ended.' unless @session.ended?
 
-      portfolio.update!(generation_status: 'generating')
+        portfolio = @session.portfolio || @session.create_portfolio!(candidate_id: @session.candidate_id)
+        next if portfolio.complete?
 
-      prompt   = build_prompt
-      response = @gemini_client.generate_content(prompt, temperature: 0.2)
+        portfolio.update!(generation_status: 'generating', generation_error: nil)
+        begin
+          raise ResponseValidator::InvalidResponse, 'Reviewed results require manual recovery.' if portfolio.assessor_overrides.exists?
 
-      save_skills(portfolio, response)
-      portfolio.update!(generation_status: 'complete', generated_at: Time.current)
+          response = @gemini_client.generate_content(build_prompt, temperature: 0.2)
+          rows = ResponseValidator.new(session: @session).call(response)
+          Portfolio.transaction(requires_new: true) do
+            portfolio.portfolio_skills.destroy_all
+            rows.each { |attributes| portfolio.portfolio_skills.create!(attributes) }
+            FitGapReport.where(portfolio_id: portfolio.id).delete_all
+            portfolio.update!(generation_status: 'complete', generated_at: Time.current, generation_error: nil)
+          end
+        rescue StandardError => error
+          failure = error
+          # Clear rolled-back children so autosave cannot reinsert them with the failure update.
+          portfolio.reload
+          portfolio.update!(generation_status: 'failed', generation_error: 'Assessment generation could not be completed. Existing evidence has been preserved. Please retry.')
+          Rails.logger.warn("[N10] generation_failed session_id=#{@session.id} error_class=#{error.class.name}")
+        end
+      end
+      raise failure if failure
 
-      Rails.logger.info("[N10] Portfolio generated for session #{@session.id}")
       portfolio
-    rescue => e
-      portfolio&.update!(generation_status: 'failed', generation_error: e.message)
-      Rails.logger.error("[N10] Portfolio generation failed for session #{@session.id}: #{e.class} #{e.message}")
-      raise
     end
 
     private
@@ -86,6 +101,10 @@ module Portfolios
            A quote is revealing if it shows HOW they think, not just WHAT they know.
 
         2. ASSIGN A LEVEL
+           Return a JSON integer from 1 to 5 only when candidate evidence supports it.
+           For unassessed or not_yet skills, return level: null and evidence: [].
+           Include every configured skill with its exact supplied skill_id and skill_label.
+           Quotes must be verbatim excerpts from candidate transcript turns, without added quote marks.
            Compare the candidate's actual behavior to the L1-L5 anchors.
            Assign the highest level where you see CONSISTENT evidence, not just one strong moment.
            If evidence is mixed (mostly L2 with one L3 moment), assign L2.
@@ -147,35 +166,5 @@ module Portfolios
       }
     end
 
-    def save_skills(portfolio, response)
-      data = response.is_a?(Hash) ? response : JSON.parse(response)
-
-      # Destroy existing skills (idempotent regeneration)
-      portfolio.portfolio_skills.destroy_all
-
-      (data['configured_skills'] || []).each do |skill_data|
-        portfolio.portfolio_skills.create!(
-          skill_id:           skill_data['skill_id'],
-          skill_label:        skill_data['skill_label'],
-          is_discovered:      false,
-          ai_level:           skill_data['level'].to_i.clamp(1, 5),
-          ai_confidence:      skill_data['confidence'],
-          evidence:           Array(skill_data['evidence']).first(3),
-          competency_summary: skill_data['competency_summary']
-        )
-      end
-
-      (data['discovered_skills'] || []).each do |skill_data|
-        portfolio.portfolio_skills.create!(
-          skill_id:           nil,
-          skill_label:        skill_data['skill_label'],
-          is_discovered:      true,
-          ai_level:           skill_data['level'].to_i.clamp(1, 5),
-          ai_confidence:      skill_data['confidence'],
-          evidence:           Array(skill_data['evidence']).first(3),
-          competency_summary: skill_data['competency_summary']
-        )
-      end
-    end
   end
 end

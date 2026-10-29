@@ -5,69 +5,27 @@ module Api
     class PortfolioSkillsController < ApiController
       authorize_auth_token! :assessor
 
-      before_action :set_portfolio_skill
-
-      # POST /api/v1/portfolio-skills/:id/override
       def override
-        existing = @portfolio_skill.assessor_override
-
-        if existing
-          if existing.update(override_params.merge(overridden_by: current_user.id, overridden_at: Time.current))
-            regenerate_stale_fitgap_reports
-            json_response(override: override_json(existing))
-          else
-            json_error(existing.errors.full_messages.first, :unprocessable_entity)
+        skill = PortfolioSkill.joins(portfolio: :session)
+          .where(sessions: { tenant_id: current_tenant_id }).find(params[:id])
+        portfolio = skill.portfolio
+        result = nil
+        portfolio.with_lock do
+          skill.reload
+          unless portfolio.complete? && skill.assessed?
+            return json_error('Collect verified evidence before overriding this skill.', :unprocessable_entity)
           end
-        else
-          new_override = @portfolio_skill.build_assessor_override(
-            override_params.merge(
-              ai_level:      @portfolio_skill.ai_level,
-              overridden_by: current_user.id,
-              overridden_at: Time.current
-            )
-          )
-
-          if new_override.save
-            regenerate_stale_fitgap_reports
-            json_response({ override: override_json(new_override) }, :created)
-          else
-            json_error(new_override.errors.full_messages.first, :unprocessable_entity)
-          end
+          result = skill.assessor_override || skill.build_assessor_override(ai_level: skill.ai_level)
+          result.assign_attributes(params.require(:override).permit(:override_level, :assessor_notes))
+          result.assign_attributes(overridden_by: current_user.id, overridden_at: Time.current)
+          result.save!
+          FitGapReport.where(portfolio_id: portfolio.id).delete_all
         end
-      end
-
-      private
-
-      def regenerate_stale_fitgap_reports
-        portfolio = @portfolio_skill.portfolio
-        FitGapReport.where(portfolio_id: portfolio.id).each do |report|
-          vacancy_id = report.vacancy_id
-          report.destroy
-          FitGapGeneratorWorker.perform_async(portfolio.id, vacancy_id)
-        end
-      end
-
-      def set_portfolio_skill
-        @portfolio_skill = PortfolioSkill.joins(:portfolio)
-                                         .find(params[:id])
+        json_response(override: result.as_json(only: %i[id portfolio_skill_id ai_level override_level assessor_notes overridden_by overridden_at]))
       rescue ActiveRecord::RecordNotFound
-        json_error("Portfolio skill not found", :not_found)
-      end
-
-      def override_params
-        params.require(:override).permit(:override_level, :assessor_notes)
-      end
-
-      def override_json(override)
-        {
-          id:                 override.id,
-          portfolio_skill_id: override.portfolio_skill_id,
-          ai_level:           override.ai_level,
-          override_level:     override.override_level,
-          assessor_notes:     override.assessor_notes,
-          overridden_by:      override.overridden_by,
-          overridden_at:      override.overridden_at
-        }
+        json_error('Portfolio skill not found', :not_found)
+      rescue ActiveRecord::RecordInvalid => error
+        json_error(error.record.errors.full_messages.first, :unprocessable_entity)
       end
     end
   end

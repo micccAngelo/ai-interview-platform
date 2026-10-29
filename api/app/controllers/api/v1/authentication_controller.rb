@@ -7,6 +7,10 @@ module Api
 
       # POST /api/v1/auth/login
       def authenticate
+        unless Rails.env.development? && ENV['ALLOW_LOCAL_LOGIN'] == 'true'
+          return json_error('Use organization sign-in. Local password login is disabled.', :forbidden)
+        end
+
         user = User.find_by(email: params[:email].to_s.downcase)
 
         return json_error('Invalid email or password', :unauthorized) unless user&.authenticate(params[:password])

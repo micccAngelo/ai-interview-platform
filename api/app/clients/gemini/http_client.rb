@@ -17,11 +17,12 @@ module Gemini
     class RateLimitError < ApiError; end
     class TimeoutError < ApiError; end
 
-    def initialize(model: nil, api_key: nil, timeout: 60)
+    def initialize(model: nil, api_key: nil, timeout: 60, retries: 3, connection: nil)
       @model = model
       @api_key = api_key || ENV.fetch('GEMINI_API_KEY')
       @timeout = timeout
-      @connection = build_connection
+      @retries = retries
+      @connection = connection || build_connection
     end
 
     # Generates content using Gemini REST API.
@@ -55,15 +56,14 @@ module Gemini
     def build_connection
       Faraday.new do |f|
         f.request :retry, {
-          max: 3,
+          max: @retries,
           interval: 1,
           interval_randomness: 0.5,
           backoff_factor: 2,
           retry_statuses: [429, 500, 502, 503],
-          retry_block: ->(env, _opts, retries, exc) {
-            retry_after = env&.response_headers&.[]('retry-after')&.to_i
-            sleep([retry_after || 1, 30].min) if env&.status == 429
-            Rails.logger.warn("[Gemini::HttpClient] Retry ##{retries} for #{@model}: #{exc&.message}")
+          retry_if: ->(env, _exception) { [429, 500, 502, 503].include?(env.status) },
+          retry_block: ->(env:, retry_count:, exception: nil, **_) {
+            Rails.logger.warn("[Gemini::HttpClient] retry=#{retry_count} status=#{env&.status} error_class=#{exception&.class&.name}")
           }
         }
         f.options.timeout = @timeout
@@ -75,7 +75,7 @@ module Gemini
     def parse_response(response)
       unless response.success?
         raise RateLimitError.new("Rate limited", status: response.status, body: response.body) if response.status == 429
-        Rails.logger.error("[Gemini::HttpClient] API error #{response.status}: #{response.body}")
+        Rails.logger.error("[Gemini::HttpClient] api_error status=#{response.status}")
         raise ApiError.new("API returned #{response.status}", status: response.status, body: response.body)
       end
 

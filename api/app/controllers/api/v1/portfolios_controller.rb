@@ -4,20 +4,23 @@ module Api
   module V1
     class PortfoliosController < ApiController
       authorize_auth_token! :assessor
+      rescue_from FitGap::Engine::NotReady do |error|
+        json_error(error.message, :unprocessable_entity)
+      end
 
       before_action :set_session,   only: %i[show regenerate]
       before_action :set_portfolio, only: %i[show export]
 
       # GET /api/v1/sessions/:id/portfolio
       def show
-        if @portfolio.nil? || @portfolio.generating?
+        if @portfolio.nil? || @portfolio.generating? || @portfolio.generation_status == 'pending'
           return render json: { status: "generating" }, status: :accepted
         end
 
         if @portfolio.failed?
           return json_response(
             portfolio: portfolio_json(@portfolio),
-            error: @portfolio.generation_error
+            error: 'Assessment generation could not be completed. Please retry.'
           )
         end
 
@@ -36,8 +39,17 @@ module Api
           return json_error("Portfolio can only be regenerated when status is 'failed'", :unprocessable_entity)
         end
 
-        portfolio.update!(generation_status: "pending", generation_error: nil)
-        PortfolioGeneratorWorker.perform_async(@session.id)
+        begin
+          @session.with_lock do
+            portfolio.reload
+            return json_error('Generation already queued', :conflict) unless portfolio.failed?
+            portfolio.update!(generation_status: "pending", generation_error: nil)
+            PortfolioGeneratorWorker.perform_async(@session.id)
+          end
+        rescue StandardError => error
+          Rails.logger.warn("[N10] enqueue_failed session_id=#{@session.id} error_class=#{error.class.name}")
+          return json_error('Generation could not be queued. Please retry.', :service_unavailable)
+        end
 
         json_response(
           message:   "Portfolio generation queued",
@@ -48,6 +60,7 @@ module Api
       # GET /api/v1/portfolios/:id/export
       def export
         format = params.fetch(:format, "json")
+        vacancy = params[:vacancy_id].present? ? Vacancy.find(params[:vacancy_id]) : nil
 
         unless %w[pdf json].include?(format)
           return json_error("Format must be 'pdf' or 'json'", :unprocessable_entity)
@@ -58,7 +71,7 @@ module Api
         end
 
         if format == "pdf"
-          vacancy = params[:vacancy_id].present? ? Vacancy.find_by(id: params[:vacancy_id]) : nil
+          FitGap::Engine.new(portfolio: @portfolio, vacancy: vacancy).call if vacancy
           pdf_data = Exports::PdfGenerator.new(portfolio: @portfolio, vacancy: vacancy).call
 
           return send_data pdf_data,
@@ -68,7 +81,8 @@ module Api
         end
 
         # JSON export
-        vacancy_id = params[:vacancy_id]
+        FitGap::Engine.new(portfolio: @portfolio, vacancy: vacancy).call if vacancy
+        vacancy_id = vacancy&.id
         export_data = build_export_json(@portfolio, vacancy_id)
 
         send_data export_data.to_json,
@@ -79,7 +93,7 @@ module Api
 
       # POST /api/v1/portfolios/:id/regenerate_fitgap
       def regenerate_fitgap
-        portfolio  = Portfolio.find(params[:id])
+        portfolio  = Portfolio.for_tenant(current_tenant_id).find(params[:id])
         vacancy_id = params[:vacancy_id]
 
         return json_error("vacancy_id is required", :unprocessable_entity) if vacancy_id.blank?
@@ -91,17 +105,15 @@ module Api
           return json_error("Portfolio is not ready (status: #{portfolio.generation_status})", :unprocessable_entity)
         end
 
-        FitGapReport.find_by(portfolio_id: portfolio.id, vacancy_id: vacancy.id)&.destroy
-        FitGapGeneratorWorker.perform_async(portfolio.id, vacancy.id)
-
-        render json: { status: "generating", message: "Fit/gap report regeneration queued" }, status: :accepted
+        report = FitGap::Engine.new(portfolio: portfolio, vacancy: vacancy).call
+        json_response(report: fit_gap_json(report))
       rescue ActiveRecord::RecordNotFound
         json_error("Portfolio not found", :not_found)
       end
 
       # POST /api/v1/portfolios/:id/fitgap
       def fitgap
-        portfolio = Portfolio.find(params[:id])
+        portfolio = Portfolio.for_tenant(current_tenant_id).find(params[:id])
 
         vacancy_id = params.dig(:fitgap, :vacancy_id) || params[:vacancy_id]
         return json_error("vacancy_id is required", :unprocessable_entity) if vacancy_id.blank?
@@ -113,27 +125,18 @@ module Api
           return json_error("Portfolio is not ready (status: #{portfolio.generation_status})", :unprocessable_entity)
         end
 
-        # Return cached report if it exists and portfolio has no new overrides
-        existing = FitGapReport.find_by(portfolio_id: portfolio.id, vacancy_id: vacancy.id)
-        if existing
-          return json_response(report: fit_gap_json(existing))
-        end
-
-        FitGapGeneratorWorker.perform_async(portfolio.id, vacancy.id)
-        render json: { status: "generating", message: "Fit/gap report generation queued" }, status: :accepted
+        report = FitGap::Engine.new(portfolio: portfolio, vacancy: vacancy).call
+        json_response(report: fit_gap_json(report))
       rescue ActiveRecord::RecordNotFound
         json_error("Portfolio not found", :not_found)
       end
 
       # GET /api/v1/portfolios/:id/fitgap/:vacancy_id
       def show_fitgap
-        portfolio = Portfolio.find(params[:id])
-        report    = FitGapReport.find_by(portfolio_id: portfolio.id, vacancy_id: params[:vacancy_id])
-
-        if report.nil?
-          return json_error("Fit/gap report not found", :not_found)
-        end
-
+        portfolio = Portfolio.for_tenant(current_tenant_id).find(params[:id])
+        vacancy = Vacancy.find(params[:vacancy_id])
+        return json_error('Portfolio is not ready', :unprocessable_entity) unless portfolio.complete?
+        report = FitGap::Engine.new(portfolio: portfolio, vacancy: vacancy).call
         json_response(report: fit_gap_json(report))
       rescue ActiveRecord::RecordNotFound
         json_error("Portfolio not found", :not_found)
@@ -153,7 +156,7 @@ module Api
         if @session
           @portfolio = @session.portfolio
         else
-          @portfolio = Portfolio.find(params[:id])
+          @portfolio = Portfolio.for_tenant(current_tenant_id).find(params[:id])
         end
       rescue ActiveRecord::RecordNotFound
         json_error("Portfolio not found", :not_found)
@@ -166,7 +169,7 @@ module Api
           candidate_id:      portfolio.candidate_id,
           generation_status: portfolio.generation_status,
           generated_at:      portfolio.generated_at,
-          generation_error:  portfolio.generation_error,
+          generation_error:  portfolio.failed? ? 'Assessment generation could not be completed. Please retry.' : nil,
           skills:            portfolio.portfolio_skills.map(&method(:portfolio_skill_json)),
           overrides:         portfolio.assessor_overrides.map(&method(:override_json))
         }
@@ -179,6 +182,8 @@ module Api
           skill_label:       skill.skill_label,
           is_discovered:     skill.is_discovered,
           ai_level:          skill.ai_level,
+          assessment_status: skill.assessment_status,
+          assessment_reason: skill.assessment_reason,
           ai_confidence:     skill.ai_confidence,
           evidence:          skill.evidence_quotes,
           competency_summary: skill.competency_summary

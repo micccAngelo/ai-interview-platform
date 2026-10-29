@@ -54,6 +54,10 @@ class ApplicationController < ActionController::API
   def authenticate_with_roles!(roles)
     roles = roles.flatten.map(&:to_s)
     result = AuthorizeApiRequest.new(request.headers, roles).call
+    unless result[:user].id.present? && result[:user].scheme.present? &&
+           result[:user].scheme == current_organization&.scheme
+      raise ExceptionHandler::Unauthorized, 'Token does not belong to this organization.'
+    end
     Current.user = result[:user]
   end
 
