@@ -13,7 +13,7 @@ assert git('branch', '--show-current') == 'feat/evidence-first-assessment'
 commit = git('rev-parse', 'HEAD')
 bundle = ROOT/'assessment/evidence-first.bundle'
 archive = ROOT/'Rakamin2-submission.zip'
-subprocess.run(['git', 'bundle', 'create', str(bundle), '--all'], cwd=ROOT, check=True)
+subprocess.run(['git', 'bundle', 'create', str(bundle), '--branches', '--tags', 'HEAD'], cwd=ROOT, check=True)
 subprocess.run(['git', 'bundle', 'verify', str(bundle)], cwd=ROOT, check=True)
 subprocess.run(['git', 'archive', '--format=zip', '--prefix=Rakamin2/', '-o', str(archive), 'HEAD'], cwd=ROOT, check=True)
 with zipfile.ZipFile(archive, 'a', compression=zipfile.ZIP_DEFLATED, compresslevel=6) as output:

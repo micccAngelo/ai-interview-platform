@@ -28,7 +28,7 @@ proof = {
     'date': '2026-10-30', 'timezone': 'Asia/Jakarta',
     'branch': 'feat/evidence-first-assessment',
     'source_head': subprocess.check_output(['git','rev-parse','HEAD'], cwd=ROOT, text=True).strip(),
-    'source_head_description': 'Implementation snapshot before final documentation and packaging commits.',
+    'source_head_description': 'Repository snapshot containing the tested API/web source; later commits may change documentation or packaging only.',
     'publication_choice': 'Keep everything in Rakamin2, per the user instruction. No external publication or portal submission.',
     'baseline': 'b836d02', 'backend_status': 'passed', 'backend_examples': int(backend[0]),
     'frontend_tests': frontend, 'browser_tests': browser, 'production_build': 'passed',
