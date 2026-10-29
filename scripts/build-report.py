@@ -1,216 +1,329 @@
 from pathlib import Path
-import json
 from html import escape
+import json
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.styles import ParagraphStyle
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak, Table, TableStyle, Image, KeepTogether
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak, Table, TableStyle, Image
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'assessment'
 proof = json.loads((OUT / 'verification.json').read_text(encoding='utf-8-sig'))
-for name, filename in [('BodyFont', 'segoeui.ttf'), ('BoldFont', 'segoeuib.ttf')]:
-    pdfmetrics.registerFont(TTFont(name, str(Path('C:/Windows/Fonts') / filename)))
-pdfmetrics.registerFontFamily('BodyFont', normal='BodyFont', bold='BoldFont')
-INK = colors.HexColor('#142f37')
-TEAL = colors.HexColor('#075f68')
-MUTED = colors.HexColor('#50616a')
-PALE = colors.HexColor('#eff7f7')
-YELLOW = colors.HexColor('#fff4d7')
-LINE = colors.HexColor('#c6d6d9')
-W = A4[0] - 96
-styles = getSampleStyleSheet()
-styles.add(ParagraphStyle(name='Text', fontName='BodyFont', fontSize=10, leading=15, textColor=INK, spaceAfter=9))
-styles.add(ParagraphStyle(name='SmallText', parent=styles['Text'], fontSize=8.3, leading=12, textColor=MUTED, spaceAfter=6))
-styles.add(ParagraphStyle(name='SectionTitle', fontName='BoldFont', fontSize=23, leading=29, textColor=INK, spaceAfter=16))
-styles.add(ParagraphStyle(name='SubTitle', fontName='BoldFont', fontSize=12, leading=17, textColor=TEAL, spaceBefore=9, spaceAfter=9))
-styles.add(ParagraphStyle(name='Kicker', fontName='BoldFont', fontSize=9, leading=13, textColor=TEAL, spaceAfter=8))
-styles.add(ParagraphStyle(name='CoverTitle', fontName='BoldFont', fontSize=39, leading=43, textColor=INK, spaceAfter=20))
-styles.add(ParagraphStyle(name='Cell', parent=styles['Text'], fontSize=8.2, leading=12, spaceAfter=0))
-styles.add(ParagraphStyle(name='CellHead', parent=styles['Cell'], fontName='BoldFont', textColor=TEAL))
+FONTS = Path('C:/Windows/Fonts')
+for family, regular, bold in [
+    ('Reading', 'georgia.ttf', 'georgiab.ttf'),
+    ('Label', 'calibri.ttf', 'calibrib.ttf'),
+    ('Code', 'consola.ttf', 'consolab.ttf'),
+]:
+    pdfmetrics.registerFont(TTFont(family, str(FONTS / regular)))
+    pdfmetrics.registerFont(TTFont(family + 'Bold', str(FONTS / bold)))
+    pdfmetrics.registerFontFamily(family, normal=family, bold=family + 'Bold')
+
+INK = colors.HexColor('#263440')
+RUST = colors.HexColor('#97482f')
+MUTED = colors.HexColor('#505b65')
+PAPER = colors.HexColor('#f6f3ef')
+LINE = colors.HexColor('#d6d5d2')
+WHITE = colors.white
+LEFT, RIGHT = 66, 44
+W = A4[0] - LEFT - RIGHT
+styles = {
+    'body': ParagraphStyle('Body', fontName='Reading', fontSize=9.5, leading=15, textColor=INK, spaceAfter=9),
+    'small': ParagraphStyle('Small', fontName='Label', fontSize=9, leading=12.5, textColor=MUTED, spaceAfter=7),
+    'title': ParagraphStyle('Title', fontName='Reading', fontSize=24, leading=29, textColor=INK, spaceAfter=15),
+    'cover': ParagraphStyle('Cover', fontName='Reading', fontSize=31, leading=37, textColor=INK, spaceAfter=18),
+    'sub': ParagraphStyle('Sub', fontName='LabelBold', fontSize=11.5, leading=15, textColor=INK, spaceBefore=10, spaceAfter=7),
+    'kicker': ParagraphStyle('Kicker', fontName='LabelBold', fontSize=10, leading=14, textColor=RUST, spaceAfter=9),
+    'cell': ParagraphStyle('Cell', fontName='Label', fontSize=9, leading=12.3, textColor=INK),
+    'cellhead': ParagraphStyle('CellHead', fontName='LabelBold', fontSize=9, leading=12.3, textColor=WHITE),
+    'code': ParagraphStyle('Code', fontName='Code', fontSize=8, leading=12, textColor=INK, spaceAfter=6),
+    'caption': ParagraphStyle('Caption', fontName='Label', fontSize=8.5, leading=11.5, textColor=MUTED, spaceAfter=10),
+}
 story = []
-def p(text, style='Text'):
+
+def p(text, style='body'):
     return Paragraph(text, styles[style])
-def add(text, style='Text'):
+
+def add(text, style='body'):
     story.append(p(text, style))
+
 def title(step, text):
-    add(step, 'Kicker'); add(text, 'SectionTitle')
-def sub(text): add(text, 'SubTitle')
+    add(step, 'kicker')
+    add(text, 'title')
+
+def sub(text):
+    add(text, 'sub')
+
 def table(headers, rows, widths):
-    data = [[p(escape(str(value)), 'CellHead') for value in headers]] + [[p(escape(str(value)), 'Cell') for value in row] for row in rows]
+    data = [[p(escape(str(value)), 'cellhead') for value in headers]]
+    data.extend([[p(escape(str(value)), 'cell') for value in row] for row in rows])
     item = Table(data, colWidths=[W * width for width in widths], repeatRows=1, hAlign='LEFT')
-    item.setStyle(TableStyle([('BACKGROUND',(0,0),(-1,0),PALE),('VALIGN',(0,0),(-1,-1),'TOP'),('TOPPADDING',(0,0),(-1,-1),8),('BOTTOMPADDING',(0,0),(-1,-1),8),('LEFTPADDING',(0,0),(-1,-1),8),('RIGHTPADDING',(0,0),(-1,-1),8),('LINEBELOW',(0,0),(-1,-1),.5,LINE)]))
-    story.append(item); story.append(Spacer(1,12))
-def box(text):
-    item = Table([[p(text)]], colWidths=[W]); item.setStyle(TableStyle([('BACKGROUND',(0,0),(-1,-1),YELLOW),('BOX',(0,0),(-1,-1),.5,colors.HexColor('#d9c28b')),('LEFTPADDING',(0,0),(-1,-1),15),('RIGHTPADDING',(0,0),(-1,-1),15),('TOPPADDING',(0,0),(-1,-1),12),('BOTTOMPADDING',(0,0),(-1,-1),8)])); story.append(item); story.append(Spacer(1,14))
-def screenshot(name, max_height=510, width=W):
-    file = OUT / 'screenshots' / name
-    if not file.exists(): raise FileNotFoundError(file)
-    image = Image(str(file)); ratio = min(width/image.imageWidth, max_height/image.imageHeight)
-    image.drawWidth = image.imageWidth * ratio; image.drawHeight = image.imageHeight * ratio
-    image.hAlign='LEFT'; story.append(image); story.append(Spacer(1,9))
-def newpage(): story.append(PageBreak())
+    item.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), INK),
+        ('ROWBACKGROUNDS', (0, 1), (-1, -1), [WHITE, PAPER]),
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+        ('TOPPADDING', (0, 0), (-1, -1), 7),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 7),
+        ('LEFTPADDING', (0, 0), (-1, -1), 8),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 8),
+        ('LINEBELOW', (0, 0), (-1, 0), 1.4, RUST),
+        ('LINEBELOW', (0, 1), (-1, -1), .35, LINE),
+    ]))
+    story.append(item)
+    story.append(Spacer(1, 10))
+
+def note(label, text):
+    item = Table([[p(label, 'kicker')], [p(text, 'small')]], colWidths=[W])
+    item.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, -1), PAPER),
+        ('LINEBEFORE', (0, 0), (0, -1), 2, RUST),
+        ('LEFTPADDING', (0, 0), (-1, -1), 13),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 13),
+        ('TOPPADDING', (0, 0), (-1, 0), 10),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 0),
+        ('BOTTOMPADDING', (0, 1), (-1, -1), 8),
+    ]))
+    story.append(item)
+    story.append(Spacer(1, 12))
+
+def screenshot(name, max_height=455, width=W):
+    image = Image(str(OUT / 'screenshots' / name))
+    scale = min(width / image.imageWidth, max_height / image.imageHeight)
+    image.drawWidth = image.imageWidth * scale
+    image.drawHeight = image.imageHeight * scale
+    image.hAlign = 'LEFT'
+    story.append(image)
+    story.append(Spacer(1, 8))
+
+def newpage():
+    story.append(PageBreak())
+
 def footer(canvas, doc):
-    canvas.saveState(); canvas.setStrokeColor(LINE); canvas.line(48,44,A4[0]-48,44)
-    canvas.setFont('BodyFont',8); canvas.setFillColor(MUTED)
-    canvas.drawString(48,30,'Rakamin / Product Engineer case study / 30 October 2026')
-    canvas.drawRightString(A4[0]-48,30,str(doc.page))
+    canvas.saveState()
+    canvas.setFillColor(INK)
+    canvas.rect(0, A4[1] - 9, A4[0], 9, fill=1, stroke=0)
+    canvas.setFont('Label', 8)
+    canvas.setFillColor(MUTED)
+    canvas.drawString(LEFT, A4[1] - 34, 'AI Interview Platform / Fullstack Product Engineer')
+    canvas.setStrokeColor(LINE)
+    canvas.line(LEFT, 43, A4[0] - RIGHT, 43)
+    canvas.setFont('Label', 8)
+    canvas.drawString(LEFT, 29, 'Technical report / 30 October 2026')
+    canvas.setFillColor(RUST)
+    canvas.setFont('LabelBold', 10)
+    canvas.drawRightString(A4[0] - RIGHT, 28, f'{doc.page:02d}')
     if doc.page > 1:
-        canvas.setFillColor(TEAL); canvas.setFont('BoldFont',8)
-        canvas.drawString(48,A4[1]-32,'Evidence before a decision')
+        canvas.setFillColor(RUST)
+        canvas.rect(27, A4[1] - 96, 3, 34, fill=1, stroke=0)
+        canvas.setFont('LabelBold', 10)
+        canvas.drawString(26, A4[1] - 112, f'{doc.page - 1:02d}')
     canvas.restoreState()
 
-story.append(Spacer(1,25))
-add('Fullstack Product Engineer / Case study', 'Kicker')
-add('Evidence before<br/>a decision.', 'CoverTitle')
-add('A complete assessment review slice for the AI Interview Platform. Missing evidence stays unassessed, validated results publish atomically, and reviewers can see what supports each rating.')
-story.append(Spacer(1,14))
-box('<b>The product decision</b><br/>An interview that did not assess SQL should not give a candidate L1 in SQL. The system must preserve that uncertainty through storage, human review, role comparison and export.')
-table(['Delivered locally', 'Verification evidence'], [
-    ['Rails data boundary and persistence', f"{proof['backend_examples']} backend examples passed against PostgreSQL."],
-    ['React evidence workspace', f"{proof['frontend_tests']} component tests and {proof['browser_tests']} browser workflow tests passed; production build passed."],
-    ['Submission materials', 'This report, screenshots, captioned walkthrough, source, runbook, test logs and technical defense notes.'],
-], [.46,.54])
-sub('Publication status')
-add('Kept entirely in Rakamin2 at the user\'s request. No GitHub publication, external video hosting or portal submission was performed.', 'SmallText')
-add(('Pull request: <a href="'+escape(proof['pr_url'],quote=True)+'">Open pull request</a>') if proof.get('pr_url') else 'Pull request: not published. A reviewable local feature branch and PR description are included.', 'SmallText')
-add(('Video: <a href="'+escape(proof['video_url'],quote=True)+'">Hosted demonstration</a>') if proof.get('video_url') else f"Video: local walkthrough.webm is included ({proof['video_duration_seconds']:.0f} seconds, captioned).", 'SmallText')
-add('Prepared with AI assistance. All demonstration records are explicitly synthetic. The included technical-defense guide is intended to support the candidate\'s own review and understanding.', 'SmallText')
+add('Rakamin engineering assignment', 'kicker')
+story.append(Spacer(1, 14))
+add('Missing ratings in<br/>interview portfolios', 'cover')
+add('A Rails and React change to preserve unassessed skills through review, role comparison and export.')
+story.append(Spacer(1, 9))
+table(['Repository', 'Working copy'], [
+    ['rakamindev/ai-interview-platform', 'C:/Rakamin2'],
+    ['Baseline', 'main at b836d02'],
+    ['Feature branch', 'feat/evidence-first-assessment'],
+    ['Work dates', '29-30 October 2026'],
+], [.40, .60])
+sub('Problem addressed')
+add('A missing model rating could become level 1 through numeric coercion. For example, an interview that never assessed SQL could still produce a low SQL score. The revised pipeline stores that skill as not assessed and keeps the same meaning in the assessor screen and exports.')
+sub('Local verification')
+add(f"{proof['backend_examples']} backend examples, {proof['frontend_tests']} component tests and {proof['browser_tests']} browser workflows passed. TypeScript and the production build passed. A deliberate missing-rating fault failed the existing regression test; reverting it restored the test.")
+sub('Report contents')
+contents = [
+    ('Repository and local setup', '02'), ('Users and assessment policy', '03'),
+    ('Findings and priorities', '04'), ('Acceptance criteria', '05'),
+    ('Implementation decisions', '06'), ('Tests and corrections', '07'),
+    ('Desktop review', '08'), ('Mobile and failed saves', '09'),
+    ('Delivery and release notes', '10'),
+]
+outline = Table([[p(label, 'small'), p(page, 'small')] for label, page in contents],
+    colWidths=[W - 30, 30], hAlign='LEFT')
+outline.setStyle(TableStyle([
+    ('LEFTPADDING', (0, 0), (-1, -1), 0), ('RIGHTPADDING', (0, 0), (-1, -1), 0),
+    ('TOPPADDING', (0, 0), (-1, -1), 0), ('BOTTOMPADDING', (0, 0), (-1, -1), 0),
+]))
+story.append(outline)
+story.append(Spacer(1, 9))
+add('Prepared with AI assistance. Demonstration records are synthetic. The source, command logs and technical-defense notes accompany this report.', 'small')
 
-newpage(); title('Step 1 / Setup and local exploration', 'Start with the real system.')
-add('The supplied repository was cloned into Rakamin2. Main is preserved at baseline b836d02; implementation lives on feat/evidence-first-assessment. No other candidates\' pull requests or solutions were used.')
-table(['Layer', 'Baseline and local verification'], [
-    ['API', 'Ruby 3.3.2, Rails 7.0, PostgreSQL. Original RSpec suite had no feature specs. Portable local tooling was needed on this Windows host.'],
-    ['Web', 'React 18, TypeScript, Vite, Tailwind and Radix primitives. Added a lockfile, Vitest/Testing Library and Playwright.'],
-    ['Workflow inspected', 'Assessment setup, session, portfolio generation, evidence review, override, vacancy comparison and export. Code paths were traced before changes; the implemented review slice was exercised in a browser.'],
-    ['Real database', 'PostgreSQL runs on localhost:54329 with a dedicated local cluster. Tests inspect actual persisted status, levels, evidence and rollback behavior.'],
-    ['Model dependency', 'Deterministic injected responses exercise the real validator and persistence pipeline. No live Gemini or microphone interview was performed.'],
-], [.24,.76])
-sub('Reproducible checks')
-add('API: bundle exec rails db:prepare; bundle exec rspec --format documentation.<br/>Web: npm ci; npm test; npm run build; npm run test:e2e.<br/>The repository includes CI configuration. Local results are recorded separately from CI, which is not claimed to have run on GitHub.', 'SmallText')
-sub('Scope and environment constraints')
-add('The slice begins with a completed interview and ends with a human-readable role comparison and export. Live audio capture, interview quality and upstream identity integration remain outside the proven behavior. Docker was unavailable locally; the alternative compose setup is supplied but not described as tested.')
-add('The brief lists Wednesday 19 August, 13:00 WIB. This work was prepared on 29-30 October 2026. The older deadline is recorded as supplied context, with no assumption of an extension.', 'SmallText')
+newpage()
+title('Step 1 / Setup', 'Repository and local setup')
+add('The project runs from C:/Rakamin2. The original main branch remains at b836d02; implementation commits are on feat/evidence-first-assessment. The code review followed assessment setup, interview sessions, portfolio generation, overrides, vacancy comparison and export.')
+table(['Layer', 'Environment and work completed'], [
+    ['API', 'Ruby 3.3.2, Rails 7.0 and PostgreSQL. Added RSpec coverage for validation, persistence, requests and background work.'],
+    ['Web', 'React 18, TypeScript, Vite, Tailwind and Radix. Added Vitest, Testing Library, Playwright and a dependency lockfile.'],
+    ['Local database', 'A dedicated PostgreSQL cluster listens on localhost:54329. Tests check persisted rows, null ratings, rollback and concurrent jobs.'],
+    ['Model response', 'A deterministic injected response exercises the real validator and persistence code without calling Gemini.'],
+    ['Windows tooling', 'Task-local Ruby and database tools are in the ignored .runtime directory. Dependencies and local credentials are excluded from the source archive.'],
+], [.25, .75])
+sub('Commands used')
+add('API', 'small')
+add('bundle exec rails db:prepare<br/>bundle exec rspec --format documentation', 'code')
+add('Web', 'small')
+add('npm ci<br/>npm test<br/>npm run build<br/>npm run test:e2e', 'code')
+sub('What the local run covers')
+add('Verification starts with a completed interview and covers portfolio generation, human review, comparison and export. The recording uses the running Rails API and synthetic records. No live Gemini or microphone interview was run. Docker was unavailable; compose configuration is included as an untested alternative.')
+add('The brief gives a deadline of Wednesday 19 August, 13:00 WIB. This work was prepared on 29-30 October 2026. Submission availability needs confirmation with the recruiter.', 'small')
 
-newpage(); title('Step 2 / Deep context and domain immersion', 'Design for the person being assessed.')
-add('The product specification emphasizes probing real capability and using transcript evidence. Its simulation connects portfolio review, assessor overrides and vacancy comparison. [1, 2] That makes trustworthy interpretation of evidence the most useful bounded improvement.')
-add('The user jobs below are working hypotheses derived from the brief and product flow. They are not claims of interviews or field research with Indonesian recruiters.', 'SmallText')
-table(['Person', 'Working condition and product implication'], [
-    ['Assessor', 'Needs to read excerpts in context and correct a rating with a reason. Put provenance before the override control.'],
-    ['Recruiter', 'Needs to see what remains unknown before sharing results. Show explicit follow-up counts and preserve them in exports.'],
-    ['Hiring manager', 'Needs a comparison against actual role requirements. Separate demonstrated gaps from requirements the interview did not assess.'],
-    ['Candidate', 'Did not choose the scoring system and bears the cost of a wrong interpretation. Never convert missing signal into a negative score or an unsupported hiring recommendation.'],
-], [.24,.76])
-sub('Indonesia and UU PDP implications')
-add('UU 27/2022 provides rights concerning correction and access (Articles 6-7), objection to certain solely automated decisions (Article 10), and impact assessment for high-risk processing (Article 34). It also addresses purpose, accuracy and confidentiality. [3]')
-add('Engineering interpretation: keep human review meaningful, minimize provider inputs, preserve uncertainty, bind evidence access to a tenant, and avoid raw provider errors in logs or responses. These safeguards support a privacy program; they do not establish legal compliance.')
-box('<b>Escalate before real hiring use</b><br/>The controller must settle legal basis, retention, deletion and correction operations, candidate objection handling, cross-border/provider arrangements and any required impact assessment. Model quality, language effects and fairness still need evaluation with consented data.')
+newpage()
+title('Step 2 / Product context', 'Users and assessment policy')
+add('The product specification calls for probing capability and using transcript evidence. Its workflow connects the interview portfolio to reviewer overrides and vacancy comparison. [1, 2] A rating error can therefore reach several screens and exported files.')
+add('The user needs below are assumptions drawn from that workflow and the assignment brief. No recruiter or candidate interviews were conducted.', 'small')
+table(['User', 'Need reflected in the change'], [
+    ['Assessor', 'Read the supporting excerpt in context before accepting or changing a rating. Require a reason for an override.'],
+    ['Recruiter', 'See which skills need another assessment before sharing the portfolio. Keep those gaps visible in exports.'],
+    ['Hiring manager', 'Compare evidence with actual role requirements. Distinguish a demonstrated skill gap from a requirement the interview missed.'],
+    ['Candidate', 'Avoid a low score for a skill that was never assessed. Keep a human reviewer responsible for interpreting the evidence.'],
+], [.25, .75])
+sub('Handling candidate data in Indonesia')
+add('UU 27/2022 includes correction and access rights in Articles 6-7, objections to certain solely automated decisions in Article 10, and impact assessment for high-risk processing in Article 34. It also addresses purpose, accuracy and confidentiality. [3]')
+add('The implementation binds evidence access to the authenticated tenant, filters sensitive log fields and avoids exposing raw provider errors. Reviewers can record a reason for changing an assessed rating. These are engineering safeguards; the work does not establish legal compliance.')
+note('Policy questions before production', 'The controller still needs to decide legal basis, retention, deletion, candidate correction and objection processes, provider arrangements and any required impact assessment. Language effects and fairness need evaluation with consented data.')
 
-newpage(); title('Step 3 / Problem and gap analysis', 'Prioritize candidate harm.')
-table(['Priority / kind', 'Observed gap and workflow impact', 'Disposition'], [
-    ['P0 / defect', 'Portfolio and override lookups did not join through the authenticated tenant. Foreign IDs could expose or change candidate evidence.', 'Tenant-bound lookup and request tests.'],
-    ['P0 / missing policy', 'Local password login could select an organization without a user-membership relation. This cannot establish tenant authorization.', 'Opt-in development-only login; verify token tenant binding. Upstream identity policy remains a dependency.'],
-    ['P1 / defect', 'to_i.clamp(1,5) turned malformed or missing model ratings into valid-looking levels.', 'Strict types and explicit not_assessed status.'],
-    ['P1 / defect', 'Old skills were deleted before all replacement rows were validated or persisted.', 'Validate first; publish inside a savepoint.'],
-    ['P1 / defect', 'Duplicate work could regenerate results; an exhausted older job could mark a completed portfolio failed.', 'Session lock, completed-work skip and guarded exhaustion callback.'],
-    ['P1 / missing specification', 'Quote provenance, unassessed-state semantics and confidence ceilings were undefined.', 'Self-defined acceptance criteria and validator.'],
-    ['P1 / unsafe inference', 'The fit/gap prompt requested culture fit and hiring recommendations from score patterns.', 'Deterministic comparison; no inferred culture or automated recommendation.'],
-    ['P2 / seam defect', 'API expected_level was read as required_level in the UI.', 'Shared typed contract and regression test.'],
-    ['P2 / defect', 'Some request errors were swallowed; responsive headings and enlarged text failed browser checks.', 'Visible retry states; mobile grid and wrapping navigation.'],
-    ['P3 / documentation', 'Setup examples used an inconsistent API port and frontend folder name.', 'Correct defaults; add a verified runbook.'],
-], [.17,.60,.23])
-add('P0 is a blocker for candidate data access; P1 can materially distort an assessment or lose evidence; P2 interrupts correct interpretation or recovery; P3 slows setup. Priorities express impact, not measured incident frequency.', 'SmallText')
+newpage()
+title('Step 3 / Code review', 'Findings and priorities')
+table(['Priority / type', 'Observed behavior', 'Change or remaining decision'], [
+    ['P0 / defect', 'Portfolio and override lookups were not joined through the authenticated tenant.', 'Tenant-scoped lookups and foreign-ID request tests.'],
+    ['P0 / policy', 'Password login could select an organization without a user-membership relation.', 'Restrict local login to opt-in development use. Production identity remains an integration requirement.'],
+    ['P1 / defect', 'Numeric coercion and clamping converted missing or malformed ratings to valid-looking levels.', 'Validate types; store invalid or missing ratings as not assessed.'],
+    ['P1 / defect', 'Generation deleted old skill rows before validating all replacements.', 'Validate first, then replace rows and completion status in one transaction.'],
+    ['P1 / defect', 'Duplicate or exhausted jobs could regenerate or mark completed work as failed.', 'Serialize by session, skip completed work and guard exhaustion updates.'],
+    ['P1 / undefined', 'Quote provenance, unassessed states and confidence limits had no clear rules.', 'Define acceptance criteria and implement a response validator.'],
+    ['P1 / inference', 'The comparison prompt requested culture fit and hiring advice from score patterns.', 'Use deterministic skill comparison; remove those inferences.'],
+    ['P2 / contract', 'The API sent expected_level while the UI read required_level.', 'Use the API field consistently and test the contract.'],
+    ['P2 / interface', 'Request errors were swallowed. Long text and enlarged text broke parts of the mobile layout.', 'Add retry feedback and fix the layouts caught by browser tests.'],
+    ['P3 / setup', 'Setup examples used inconsistent API ports and frontend folder names.', 'Correct the defaults and add a runbook.'],
+], [.16, .49, .35])
+add('P0 covers candidate-data access; P1 covers misleading results or evidence loss; P2 covers interpretation and recovery; P3 covers setup. These priorities reflect expected impact, not measured incident rates.', 'small')
 
-newpage(); title('Step 4 / Acceptance criteria', 'Define correct behavior first.')
-add('The acceptance criteria were written and committed before implementation commits. The full checklist is in acceptance-criteria.md. Each item below has an observable failure condition.')
-table(['Boundary', 'Correct behavior and important edge cases'], [
-    ['Rating types', 'Only integer 1..5. Null, strings, floats, booleans, 0 and 6 do not become ratings.'],
-    ['Completeness', 'Every configured skill is represented. An omitted or untouched skill is explicitly unassessed.'],
-    ['Provenance', '1-3 bounded excerpts must occur in candidate turns after whitespace normalization. AI-only and invented quotes cannot justify a score.'],
-    ['Confidence', 'Known confidence values only, bounded by coverage state and probe count. Confidence describes signal, not candidate ability.'],
-    ['Malformed response', 'Unknown or duplicate identities and wrong JSON shapes fail the attempt without replacing old rows.'],
-    ['Atomic publication', 'All rows and completion status commit together. A later validation or DB failure restores the previous rows.'],
-    ['Jobs and recovery', 'Duplicate jobs serialize; complete work is skipped. Queue failure leaves a failed portfolio retryable. Exhaustion cannot clobber complete work.'],
-    ['Historical data', 'Old ratings are labelled legacy. No existing row silently gains verified provenance. Schema rollback refuses to invent levels for null rows.'],
-    ['Human override', 'Only assessed evidence can be overridden. Require a bounded rationale and retain original AI level plus reviewer attribution.'],
-    ['Authorization', 'Foreign tenant resource IDs return 404. Candidate roles cannot read assessor evidence. Background comparison checks both tenants.'],
-    ['Comparison', 'Use expected_level. Never match different canonical IDs by label; ambiguous custom matches remain unassessed.'],
-    ['Interface', 'Loading, empty, request error, failed generation, partial, legacy and long-text states; keyboard focus, phone layout and 200% text size.'],
-], [.24,.76])
+newpage()
+title('Step 4 / Definition of done', 'Acceptance criteria')
+add('These criteria were committed before implementation. The full list and trade-offs are in assessment/acceptance-criteria.md.', 'small')
+table(['Boundary', 'Required behavior'], [
+    ['Rating type', 'Accept only integer levels 1-5. Reject null, strings, floats, booleans and out-of-range values as ratings.'],
+    ['Coverage', 'Return every configured skill. Omitted or untouched skills remain explicitly unassessed.'],
+    ['Evidence', 'Require 1-3 bounded excerpts found in candidate turns after whitespace normalization. Interviewer-only or invented quotes cannot support a rating.'],
+    ['Confidence', 'Accept known confidence values and cap them by interview coverage and probe count. Confidence describes the signal, not candidate ability.'],
+    ['Response shape', 'Unknown or duplicate identities and malformed JSON fail the attempt without replacing existing rows.'],
+    ['Publication', 'Commit all replacement rows and completion status together. Validation or database failure restores the previous rows.'],
+    ['Jobs', 'Serialize duplicate jobs and skip completed work. A queue failure stays retryable; an older exhausted job cannot overwrite completion.'],
+    ['Historical data', 'Mark old ratings as legacy without changing their levels or claiming verified provenance. Refuse rollback that would require inventing levels.'],
+    ['Override', 'Allow overrides only for assessed rows. Require a reason and retain the original AI level, reviewer and timestamp.'],
+    ['Authorization', 'Return 404 for foreign-tenant resources. Candidate roles cannot read assessor evidence. Background comparison checks both tenants.'],
+    ['Role comparison', 'Use expected_level. Different canonical IDs cannot match by label; ambiguous custom matches remain unassessed.'],
+    ['Interface', 'Cover loading, empty, error, partial, legacy and long-text states, keyboard focus, 390px layout and 200% text resizing.'],
+], [.25, .75])
 
-newpage(); title('Step 4 / Strategy and trade-offs', 'Choose a smaller correctness boundary.')
-table(['Option', 'Impact / cost', 'Maintainability and failure mode'], [
-    ['A. UI warning', 'Low cost; helps a reviewer notice uncertainty.', 'Leaves fabricated scores and destructive writes intact. API/export consumers remain exposed. Rejected.'],
-    ['B. Strict evidence boundary + atomic publication', 'Moderate schema and test work; protects the complete review slice.', 'Chosen. Simple services and no new infrastructure. Conservative quote matching rejects paraphrases; a bounded model call holds a DB connection and session row lock.'],
-    ['C. Versioned ledger + outbox + evaluation service', 'Best long-term history, durable scheduling and evaluation separation; much larger implementation.', 'More operational ownership and migration cost. A sensible next stage after validating scoring policy, not a prerequisite to fix score coercion.'],
-], [.22,.32,.46])
-sub('The implemented data path')
-table(['1. Interview', '2. Boundary', '3. Publication', '4. Review', '5. Comparison'], [['Ended session and candidate transcript', 'Strict response shape, provenance and confidence', 'Validated rows and completion in one transaction', 'Evidence, follow-up and attributed override', 'Rule-based role requirements and export']], [.2,.2,.2,.2,.2])
-sub('Migration and rollback')
-add('Add assessment_status (default legacy) and assessment_reason. Make ai_level nullable. A database check requires null exactly for not_assessed and a level for assessed or legacy. Old scores remain intact; they are not retroactively called verified.')
-add('The migration round-trip is tested on legacy rows. Down refuses while null ratings exist, rather than deleting evidence or inventing scores. For an application rollback, retain the additive schema; reconcile or archive unassessed records before reverting the schema.')
-sub('Failure boundaries')
-add('The portfolio call uses a 180-second HTTP read timeout and disables provider retries; Sidekiq owns durable retries. This is not a strict end-to-end wall-clock deadline. Publication is serialized per session. Exactly-once provider billing, crash watchdogs, an outbox, append-only reviewer history and fairness calibration are not delivered guarantees.', 'SmallText')
+newpage()
+title('Step 4 / Approach', 'Implementation decisions')
+table(['Option', 'Effect', 'Trade-off'], [
+    ['UI warning only', 'Helps a reviewer notice missing evidence.', 'Leaves coerced scores and destructive replacement behavior in the API and export. Rejected.'],
+    ['Validation and atomic writes', 'Chosen. Checks evidence before publishing a complete set of skill rows.', 'Requires a schema change and holds a database connection and session lock during the bounded model call.'],
+    ['Versioned ledger and outbox', 'Adds review history and more durable job scheduling.', 'Needs more migrations and operational work. Kept as a follow-up to the immediate rating fix.'],
+], [.22, .38, .40])
+sub('Data path')
+table(['Interview', 'Validation', 'Publication', 'Review', 'Comparison'], [[
+    'Ended session and transcript', 'Types, coverage and candidate quotes', 'Skill rows and status in one transaction',
+    'Evidence and attributed override', 'Role requirements and export',
+]], [.2, .2, .2, .2, .2])
+sub('Schema and rollback')
+add('The migration adds assessment_status and assessment_reason, and makes ai_level nullable. A database check requires a null level for not_assessed and a level for assessed or legacy. Existing scores retain their values and receive legacy status.')
+add('Tests round-trip legacy rows through the migration. The down migration refuses to run while null ratings exist. An application rollback can retain the additive schema; a schema rollback first needs a decision about those unassessed records.')
+sub('Timeouts and retries')
+add('The portfolio call has a 180-second HTTP read timeout and no nested provider retries. Sidekiq handles durable retries. The timeout is not an end-to-end deadline, and the session lock does not guarantee exactly-once provider billing.')
+add('Quote matching is deliberately conservative: a paraphrase can be rejected. It checks where a quote came from; a reviewer must still judge whether the quote supports the rating.', 'small')
 
-newpage(); title('Step 5 / Implementation and correctness proof', 'Tests must catch a wrong result.')
-table(['Check', 'Recorded outcome'], [
-    ['Backend', f"{proof['backend_examples']} passing examples; real PostgreSQL persistence, response validation, tenant requests, rollback, worker exhaustion and concurrent duplicate jobs."],
-    ['Frontend', f"{proof['frontend_tests']} passing component tests; {proof['browser_tests']} passing browser workflow tests; TypeScript and production build pass."],
-    ['Live API seam', proof.get('live_api_summary', 'See verification.json for the separately recorded live API check.')],
-    ['Seeded fault', 'A missing score was deliberately changed into L1 on a scratch branch. The strict missing-rating test failed, then the fault was reverted. Assertions were not weakened.'],
-], [.26,.74])
+newpage()
+title('Step 5 / Verification', 'Tests and corrections')
+table(['Check', 'Recorded result'], [
+    ['Backend', f"{proof['backend_examples']} examples passed against PostgreSQL, covering validation, tenant requests, rollback, jobs and concurrent duplicates."],
+    ['Frontend', f"{proof['frontend_tests']} component tests and {proof['browser_tests']} browser workflows passed. TypeScript and the Vite production build passed."],
+    ['Real API', 'Four skills returned: two assessed, two null. SQL stayed unassessed with expected_level=4. JSON and PDF exports passed.'],
+    ['Browser controls', f"{proof['live_control_checks']} live checks passed for PDF downloads, navigation, empty-role action and logout, with no page errors."],
+], [.24, .76])
+sub('Deliberate regression')
+add('On test/seeded-missing-rating, the missing-rating result was deliberately changed from null to level 1. The existing regression test failed. Reverting the change restored the test without changing its assertion.')
 fault = proof['seeded_fault']
-add('Seeded-fault history', 'SubTitle')
-add(f"Scratch branch: {escape(fault['branch'])}<br/>Fault commit: {escape(fault['mutant'])}<br/>Revert commit: {escape(fault['revert'])}<br/>Observed result: {escape(fault['result'])}", 'SmallText')
-sub('AI verification moment')
-add('An initially generated savepoint implementation was still unsafe: Rails retained rolled-back association targets and autosaved a new skill while storing failure status. The PostgreSQL rollback test expected only the original row and observed an extra row. Reloading the portfolio clears those targets before the failure update. The original failed output is retained in ai-verification-red.log; the assertion was unchanged.')
-add('The first generated UI called a regeneration method that did not exist and treated a union response as if it always held a portfolio. TypeScript rejected both. The calls were corrected against the existing session API and the build passed.')
-add('Browser checks then caught skill headings squeezed by a status label on phones and navigation overflow at 200% text size. The layout was changed to an explicit mobile grid and wrapping navigation; the original overflow assertion remained unchanged and passed.')
-box('<b>Evidence is bounded</b><br/>A quote occurrence check establishes provenance. It does not establish semantic relevance, proficiency, model calibration or absence of bias. Synthetic test success is not a validation of hiring outcomes.')
+add(f"Fault: {escape(fault['mutant'])}<br/>Revert: {escape(fault['revert'])}", 'code')
+add(escape(fault['result']), 'small')
+sub('Corrections during verification')
+add('The first AI-generated savepoint implementation still saved an extra skill row after rollback. Rails retained the rolled-back association target and autosaved it when recording failure. Reloading the portfolio before that update cleared the cached target. The original failing output is in ai-verification-red.log; the assertion stayed unchanged.')
+add('TypeScript also caught a nonexistent regeneration method and an incorrect assumption that a union response always contained a portfolio. Browser checks caught squeezed skill headings on phones and navigation overflow at 200% text size. Those checks passed after correcting the code and layout.')
+add('These results cover synthetic fixtures and an injected model response. They do not validate live Gemini quality, audio interviews, model calibration or hiring fairness.', 'small')
 
-newpage(); title('Step 5 / Interface evidence', 'Make missing signal visible.')
-add('Desktop evidence review. Synthetic browser fixtures; counts and states are derived from the fixture API payload. The latest screenshots were taken after the responsive fixes.', 'SmallText')
-screenshot('01-review-desktop.png', 470)
-add('Coverage appears before individual ratings. Evidence and its provenance note appear before the reviewer action. A side panel keeps role comparison available without replacing the evidence context.', 'SmallText')
-sub('Design decisions')
-add('Extend the existing teal/yellow identity. Darker teal improves primary-button contrast; yellow denotes follow-up. System sans supports dense reading. Native disclosure controls keep excerpts and reviewer forms keyboard accessible. ENERGY 1 / RHYTHM 2 / MOTION 1.', 'SmallText')
+newpage()
+title('Step 5 / Screenshots', 'Desktop review')
+add('The review shows coverage before individual skill ratings. This capture uses a synthetic browser fixture with one assessed skill and one skill requiring follow-up.', 'small')
+screenshot('01-review-desktop.png', 450)
+add('Figure 1. The fixture API supplies the counts and statuses. The SQL row has no score; its follow-up action remains visible.', 'caption')
+sub('Review order')
+add('Each assessed row puts the summary and candidate excerpt above the override form. Reviewers can open the transcript before changing a rating. The role selector sits alongside the evidence so a comparison is available from the same workspace.')
+add('The application retains the repository\'s teal and yellow styling. Native disclosure controls keep long excerpts manageable. The contrast check sampled 177 visible text and control combinations across review, failed save and comparison, with no AA text-threshold failures. Disabled controls were excluded.', 'small')
 
-newpage(); title('Step 5 / Responsive and failure states', 'Recovery is part of the workflow.')
-add('Phone review and a failed override save are exercised in the browser suite. The failure is deliberately simulated, and the rationale remains available for retry.', 'SmallText')
+newpage()
+title('Step 5 / Screenshots', 'Mobile and failed saves')
+add('Browser tests exercise the review at 390px, with long unbroken text and with text enlarged to 200%. They check for horizontal page overflow.', 'small')
 phone_images = []
 for name in ['08b-mobile-overview.png', '08c-mobile-evidence.png']:
-    item = Image(str(OUT / 'screenshots' / name))
-    scale = min((W*.45)/item.imageWidth, 450/item.imageHeight)
-    item.drawWidth = item.imageWidth*scale; item.drawHeight = item.imageHeight*scale
-    phone_images.append(item)
-phones = Table([phone_images], colWidths=[W*.5,W*.5]); phones.setStyle(TableStyle([('VALIGN',(0,0),(-1,-1),'TOP'),('LEFTPADDING',(0,0),(-1,-1),0)])); story.append(phones)
-add('Phone overview and evidence detail. The full phone capture is included at native resolution. The browser test also enlarges text to 200% and checks for horizontal overflow.', 'SmallText')
-screenshot('02b-save-error-message.png', 55)
-add('Other included captures: role comparison, request retry, empty results, pending generation and failed generation. No control silently claims a failed save or export succeeded.', 'SmallText')
+    image = Image(str(OUT / 'screenshots' / name))
+    scale = min((W * .45) / image.imageWidth, 420 / image.imageHeight)
+    image.drawWidth = image.imageWidth * scale
+    image.drawHeight = image.imageHeight * scale
+    phone_images.append(image)
+phones = Table([phone_images], colWidths=[W * .5, W * .5], hAlign='LEFT')
+phones.setStyle(TableStyle([
+    ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+    ('LEFTPADDING', (0, 0), (-1, -1), 0), ('RIGHTPADDING', (0, 0), (-1, -1), 0),
+]))
+story.append(phones)
+story.append(Spacer(1, 8))
+add('Figure 2. Phone overview and evidence detail. Full-resolution captures are included in assessment/screenshots/.', 'caption')
+sub('Failed override save')
+screenshot('02b-save-error-message.png', 48)
+add('Figure 3. The test deliberately fails a save. The form keeps the reviewer\'s reason, reports that it was not saved and allows another attempt. The retry succeeds.', 'caption')
+add('Separate browser checks cover request retry, empty results, pending generation and failed generation. The recording labels its simulated failures and then shows recovery through the real API.', 'small')
 
-newpage(); title('Step 6 / Handoff and release boundaries', 'Review locally, then publish deliberately.')
-sub('Included in Rakamin2')
-add('Source changes in api/ and web/; local Git feature branch and seeded-fault history; assessment test logs and verification.json; screenshots; sample JSON/PDF exports; walkthrough.webm; RUNBOOK.md; technical-defense.md; PR_DESCRIPTION.md; source archive and Git bundle.')
-sub('Before external submission')
-add('Publish the feature branch and open the prepared pull request against rakamindev/ai-interview-platform. Host the captioned 3-5 minute walkthrough on the chosen external platform. Replace the publication status at the front of this report with the resulting URLs, then upload the single PDF in the hiring portal. No portal submission is claimed here.')
-sub('Operational rollout')
-add('Apply the additive migration first, then deploy API and web together so nullable ratings and assessment statuses are understood by all consumers. Review legacy records and plan follow-up assessments. Monitor generation failures, pending-job age, provider latency, missing-evidence rates and assessor overrides before expanding use. No target rates or performance claims are invented.')
-sub('Known limits')
-add('Live Gemini and audio are unverified. Historical complete portfolios require follow-up rather than automatic verification. The latest override is retained, not a full review ledger. A row lock spans the model call. There is no durable outbox or abandoned-job watchdog. Upstream organization identity and the controller\'s privacy policies remain dependencies. PDF font coverage beyond Latin is not validated.')
-sub('Primary sources')
+newpage()
+title('Delivery', 'Delivery and release notes')
+table(['Artifact', 'Contents'], [
+    ['api/ and web/', 'Implementation and tests on feat/evidence-first-assessment.'],
+    ['assessment/', 'Command logs, verification.json, screenshots and sample exports.'],
+    ['walkthrough.webm', f"Captioned local recording, {proof['video_duration_seconds']:.0f} seconds. No narration."],
+    ['Supporting notes', 'RUNBOOK.md, technical-defense.md and a prepared PR_DESCRIPTION.md.'],
+    ['Portable package', 'Rakamin2-submission.zip includes source and artifacts. evidence-first.bundle preserves the project branches and fault/revert history.'],
+], [.29, .71])
+sub('Submission links')
+for label, key in [('Pull request', 'pr_url'), ('Walkthrough', 'video_url')]:
+    url = proof.get(key)
+    if url:
+        add(f'{label}: <a href="{escape(url, quote=True)}" color="#97482f">{escape(url)}</a>', 'small')
+    else:
+        add(f'{label}: not published; the local material is included in the package.', 'small')
+add('Before submitting, publish the prepared PR, host the recording and add both links here. No portal submission has been made.' if not proof.get('pr_url') and not proof.get('video_url') else 'Check that both links are accessible to the recruiter before uploading this PDF. Portal submission is not recorded.', 'small')
+sub('Release sequence and remaining work')
+add('Apply the additive migration, then deploy the API and web together so both understand nullable ratings. Review legacy portfolios and arrange follow-up assessments. Monitor failed generation, pending-job age, provider latency, missing evidence and overrides.')
+add('The implementation keeps only the latest override. An append-only review ledger, durable outbox and abandoned-job watchdog remain follow-ups. Production also depends on trusted organization identity and the controller\'s privacy policies. PDF font coverage beyond Latin is unverified.', 'small')
+sub('Sources')
 refs = [
- ('1. Product behavior specification', 'https://github.com/rakamindev/ai-interview-platform/wiki/PRD-01-%E2%80%94-First-Principles:-AI-Interview-Behavior'),
- ('2. Product workflow simulation', 'https://github.com/rakamindev/ai-interview-platform/wiki/PRD-02-%E2%80%94-Real-Simulation:-End%E2%80%90to%E2%80%90End-Interview'),
- ('3. UU 27/2022, JDIH Kemkomdigi', 'https://jdih.komdigi.go.id/produk_hukum/view/id/832/t/undangundang%20nomor%2027%20tahun%202022'),
- ('4. Repository baseline', 'https://github.com/rakamindev/ai-interview-platform/tree/b836d02'),
+    ('1. Product behavior specification', 'https://github.com/rakamindev/ai-interview-platform/wiki/PRD-01-%E2%80%94-First-Principles:-AI-Interview-Behavior'),
+    ('2. Product workflow simulation', 'https://github.com/rakamindev/ai-interview-platform/wiki/PRD-02-%E2%80%94-Real-Simulation:-End%E2%80%90to%E2%80%90End-Interview'),
+    ('3. UU 27/2022, JDIH Kemkomdigi', 'https://jdih.komdigi.go.id/produk_hukum/view/id/832/t/undangundang%20nomor%2027%20tahun%202022'),
+    ('4. Repository baseline b836d02', 'https://github.com/rakamindev/ai-interview-platform/tree/b836d02'),
 ]
 for label, url in refs:
-    add(f'<a href="{escape(url,quote=True)}" color="#075f68">{escape(label)}</a>', 'SmallText')
-add('The user-supplied fullstack brief is the task source. Assumptions and local execution evidence are identified separately throughout this report. The report does not claim legal certification, user research or measured hiring impact.', 'SmallText')
+    add(f'<a href="{escape(url, quote=True)}" color="#97482f">{escape(label)}</a>', 'small')
 
 file = OUT / 'Submission_Report.pdf'
-doc = SimpleDocTemplate(str(file), pagesize=A4, rightMargin=48, leftMargin=48, topMargin=57, bottomMargin=60, title='Evidence before a decision / Product Engineer Case Study', author='AI-assisted case study implementation')
+doc = SimpleDocTemplate(str(file), pagesize=A4, leftMargin=LEFT, rightMargin=RIGHT,
+    topMargin=65, bottomMargin=59, title='Missing ratings in interview portfolios',
+    author='AI-assisted case study implementation')
 doc.build(story, onFirstPage=footer, onLaterPages=footer)
 print(file)

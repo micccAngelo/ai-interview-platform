@@ -6,12 +6,13 @@ The completed local implementation and submission materials are in this folder. 
 
 | File | Contents |
 |---|---|
-| [Submission report](assessment/Submission_Report.pdf) | Ten-page case study covering exploration, product context, prioritized gaps, criteria, trade-offs, implementation and verification |
+| [Submission report](assessment/Submission_Report.pdf) | Ten-page technical report covering exploration, product context, prioritized gaps, criteria, trade-offs, implementation and verification |
 | [Walkthrough](assessment/walkthrough.webm) | 3 minutes 40 seconds, captioned recording of the local application; no narration |
 | [Sample exported portfolio](assessment/sample-portfolio.pdf) | Actual Rails PDF export, including unassessed requirements |
 | [Runbook](assessment/RUNBOOK.md) | Setup, local demo, verification commands and deployment limits |
 | [Technical defense](assessment/technical-defense.md) | Code tour, decisions, trade-offs and questions to prepare for |
 | [Design verification](assessment/design-verification.md) | PASS gate, contrast results and recorded control-by-control behavior |
+| [Report design and copy check](assessment/report-design-check.md) | PASS gate for the revised PDF layout and wording, with rendering and text checks |
 | [Verification record](assessment/verification.json) | Machine-readable results with links to the corresponding local logs |
 | [Prepared PR description](assessment/PR_DESCRIPTION.md) | Ready for your review if you later choose to publish |
 

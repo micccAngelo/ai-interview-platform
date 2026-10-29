@@ -96,4 +96,6 @@ Evidence: `browser-tests.log` (3 passing workflows), `frontend-tests.log` (11 pa
 
 ## Artifact inspection
 
+The report's later design and copy revision is covered by the PASS gate in `report-design-check.md` and the exact-PDF checks in `report-checks.json`. That revision changes the report typography, palette, section labels and prose; application screenshots and results remain the same.
+
 The final report was rendered with Poppler. All ten pages were inspected as a contact sheet; desktop evidence and mobile/failure pages were also inspected at readable resolution. Both real exported sample pages were inspected. Video frames at 12, 158 and 210 seconds confirm readable captions and the review, transcript and final limitations scenes. The video is 1280x900, 25 fps and 219.68 seconds. No narration or live model call is claimed.

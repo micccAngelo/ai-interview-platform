@@ -1,0 +1,43 @@
+{
+  "scope": "PDF report design and copy revision; application code and test results unchanged",
+  "pages": 10,
+  "words": 2272,
+  "checked_text_characters": 15651,
+  "text_bounds": "passed",
+  "required_facts": "passed",
+  "old_slogans_removed": "passed",
+  "ascii_dashes": "passed",
+  "source_link_annotations": 4,
+  "text_contrast_pairs": [
+    {
+      "role": "body on white",
+      "ratio": 12.75
+    },
+    {
+      "role": "caption on white",
+      "ratio": 6.94
+    },
+    {
+      "role": "table header",
+      "ratio": 12.75
+    },
+    {
+      "role": "section label",
+      "ratio": 6.39
+    },
+    {
+      "role": "note label",
+      "ratio": 5.78
+    },
+    {
+      "role": "note body",
+      "ratio": 6.28
+    },
+    {
+      "role": "alternate table row",
+      "ratio": 11.52
+    }
+  ],
+  "visual_inspection": "All ten final pages rendered with Poppler and inspected individually.",
+  "sha256": "096309facd031458d1800896b00dc1b8b6185337b99637e00f4aba21ca39dea1"
+}
