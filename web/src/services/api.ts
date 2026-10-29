@@ -1,13 +1,14 @@
 import axios from "axios";
 import { getStoredToken, clearToken } from "@/stores/authAtom";
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:3000/api/v1";
-const WS_BASE_URL = import.meta.env.VITE_WS_BASE_URL ?? "ws://localhost:3000";
+const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:3001/api/v1";
+const WS_BASE_URL = import.meta.env.VITE_WS_BASE_URL ?? "ws://localhost:3001";
 
 export const WS_URL = WS_BASE_URL;
 
 export const api = axios.create({
   baseURL: BASE_URL,
+  timeout: 15000,
   headers: { "Content-Type": "application/json" },
 });
 

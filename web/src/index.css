@@ -1,3 +1,4 @@
+@import './styles/review.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -14,7 +15,7 @@
         --popover-foreground: 222 47% 11%;
 
         /* Rakamin teal: #01959f → hsl(184, 99%, 31%) */
-        --primary: 184 99% 31%;
+        --primary: 184 91% 24%;
         --primary-foreground: 0 0% 98%;
 
         /* Rakamin yellow: #FBC037 → hsl(43, 96%, 60%) */
@@ -22,7 +23,7 @@
         --secondary-foreground: 26 47% 25%;
 
         --muted: 210 40% 96%;
-        --muted-foreground: 215 16% 47%;
+        --muted-foreground: 215 16% 40%;
 
         --accent: 210 40% 96%;
         --accent-foreground: 222 47% 11%;
@@ -75,5 +76,14 @@
 
     body {
         @apply bg-background text-foreground;
+    }
+
+    button, a, summary, select, label[for] { cursor: pointer; }
+    button:disabled, select:disabled { cursor: not-allowed; }
+    :focus-visible { outline: 3px solid #076b74; outline-offset: 3px; }
+    button:active:not(:disabled) { transform: translateY(1px); }
+    summary:hover { color: #075b63; text-decoration: underline; }
+    @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { animation: none !important; transition: none !important; }
     }
 }

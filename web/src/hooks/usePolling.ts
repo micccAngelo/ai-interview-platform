@@ -10,7 +10,14 @@ export function usePolling(
 
   useEffect(() => {
     if (!active) return;
-    const id = setInterval(() => fnRef.current(), intervalMs);
-    return () => clearInterval(id);
+    let stopped = false;
+    let id: ReturnType<typeof setTimeout>;
+    const tick = async () => {
+      try { await fnRef.current(); }
+      catch { /* The polling owner presents request errors; keep the timer recoverable. */ }
+      finally { if (!stopped) id = setTimeout(tick, intervalMs); }
+    };
+    id = setTimeout(tick, intervalMs);
+    return () => { stopped = true; clearTimeout(id); };
   }, [intervalMs, active]);
 }
