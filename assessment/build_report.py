@@ -226,7 +226,6 @@ for label, url in [
     ('Baseline repository and service documentation', 'https://github.com/rakamindev/ai-interview-platform'),
     ('Product wiki PRD 01 and PRD 02', 'https://github.com/rakamindev/ai-interview-platform/wiki'),
     ('OPM: Structured Interviews (rating-scale principle only)', 'https://www.opm.gov/policy-data-oversight/assessment-and-selection/structured-interviews/'),
-    ('JDIH BPK: UU No. 27 Tahun 2022', 'https://peraturan.bpk.go.id/Details/229798/uu-no-27-tahun-2022'),
 ]:
     add('<link href="' + escape(url) + '"><u>' + escape(label) + '</u></link>', 'small')
 add('Also consulted: the supplied four-page case-study brief. OPM guidance is a methodological reference, not Indonesian regulation. Product/persona observations are reasoned hypotheses unless identified as executed application checks.', 'small')

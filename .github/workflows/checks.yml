@@ -36,6 +36,7 @@ jobs:
           bundler-cache: true
           working-directory: api
       - run: bundle exec rails db:create db:schema:load
+      - run: bundle exec rails zeitwerk:check
       - run: bundle exec rspec spec
 
   web:

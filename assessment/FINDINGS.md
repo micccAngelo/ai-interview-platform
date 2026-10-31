@@ -20,7 +20,7 @@ The product turns an adaptive interview into a skill portfolio that an assessor 
 
 Assessor: inspect what was measured and explain a correction. Recruiter: identify missing requirements and coordinate follow-up. Hiring manager: interpret proficiency against the role. Candidate: avoid being penalized for a skill that was never assessed and keep interview material within the appropriate organization. These roles are inferred from the brief/wiki, not from conducted user interviews.
 
-For Indonesian deployment, the brief identifies UU PDP as relevant. JDIH BPK describes UU 27/2022 as governing personal data processing, data-subject rights, controller/processor obligations and related safeguards. This implementation addresses a concrete access boundary and avoids real personal data in fixtures/artifacts. Legal basis, notices, retention, rights workflows and provider data transfers require separate product/legal decisions; no blanket compliance certification is claimed.
+For Indonesian deployment, the brief identifies UU PDP as relevant. This implementation addresses a concrete access boundary and avoids real personal data in fixtures/artifacts. Legal basis, notices, retention, rights workflows and provider data transfers require separate product/legal decisions; no blanket compliance certification is claimed.
 
 OPM's primary guidance emphasizes common rating scales and acceptable-answer standards in structured interviews. This supports the choice to make the comparison scale explicit. Its fixed-question method differs from this platform's adaptive PRD, so that method is not imported as a product requirement or presented as Indonesian regulation.
 
@@ -39,4 +39,3 @@ OPM's primary guidance emphasizes common rating scales and acceptable-answer sta
 - Baseline repository README, Rails schema/services/controllers, and React report/types/components.
 - Product wiki PRD 01 and PRD 02: https://github.com/rakamindev/ai-interview-platform/wiki
 - OPM, Structured Interviews: https://www.opm.gov/policy-data-oversight/assessment-and-selection/structured-interviews/
-- JDIH BPK, UU 27/2022: https://peraturan.bpk.go.id/Details/229798/uu-no-27-tahun-2022
