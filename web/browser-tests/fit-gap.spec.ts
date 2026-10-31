@@ -144,7 +144,11 @@ test("provides a keyboard-operable retry for errors without automatic requeue", 
   await expect(page.getByRole("alert")).toBeVisible();
   const retry = page.getByRole("button", { name: "Retry comparison" });
   await retry.focus();
-  await page.keyboard.press("Enter");
+  expect(calls).toBe(1);
+  await Promise.all([
+    page.waitForResponse("**/api/v1/portfolios/1/fitgap/2"),
+    page.keyboard.press("Enter"),
+  ]);
   await expect(page.getByRole("alert")).toBeVisible();
   expect(calls).toBe(2);
 });
