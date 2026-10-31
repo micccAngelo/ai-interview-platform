@@ -86,7 +86,7 @@ table(['What changes', 'Why it matters'], [
 add('Review artifacts', 'h2')
 add('<link href="' + escape(links['pull_request']) + '"><u>Open the GitHub Pull Request</u></link>')
 add('<link href="' + escape(links['video']) + '"><u>Watch the 3-minute demonstration</u></link>')
-add('The demonstration uses synthetic records and Indonesian subtitles. Code and documentation were developed with AI assistance; the candidate must review and understand the implementation before the live technical defense.', 'small')
+add('The demonstration uses synthetic records and Indonesian subtitles. Code and documentation were developed with AI assistance.', 'small')
 add('Scope: the post-interview portfolio-to-vacancy review. Live audio interviews and upstream Gemini portfolio generation are outside the verified slice.', 'small')
 
 newpage()
@@ -229,8 +229,6 @@ for label, url in [
 ]:
     add('<link href="' + escape(url) + '"><u>' + escape(label) + '</u></link>', 'small')
 add('Also consulted: the supplied four-page case-study brief. OPM guidance is a methodological reference, not Indonesian regulation. Product/persona observations are reasoned hypotheses unless identified as executed application checks.', 'small')
-add('Live technical defense', 'h2')
-add('The candidate should be able to explain the matching policy, null semantics, override precedence, trust boundary, transaction behavior, rejected alternatives, seeded fault and remaining risks. A Bahasa Indonesia preparation guide is included in assessment/INTERVIEW_PREP.md.')
 
 def furniture(canvas, document):
     canvas.saveState()
